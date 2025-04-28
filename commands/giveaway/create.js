@@ -172,20 +172,16 @@ module.exports = {
         requirementsText = `**Entry Requirements:**\n${requirements.join('\n')}\n\n`;
       }
       
-      // Create giveaway embed
+      // Create a more compact giveaway embed
       const giveawayEmbed = {
         title: `🎉 GIVEAWAY: ${prize}`,
-        description: `${description ? `${description}\n\n` : ''}${requirementsText}`,
+        description: `${description ? `${description}\n\n` : ''}${requirementsText}Click the button below to enter!\nEnds: <t:${Math.floor(endTime / 1000)}:R> | Host: <@${interaction.user.id}> | Winners: ${winnerCount}`,
         fields: [
-          { name: 'Ends At', value: `<t:${Math.floor(endTime / 1000)}:R> (<t:${Math.floor(endTime / 1000)}:F>)`, inline: true },
-          { name: 'Hosted By', value: `<@${interaction.user.id}>`, inline: true },
-          { name: 'Winners', value: winnerCount.toString(), inline: true },
           { name: 'Entries', value: '0', inline: true },
-          { name: 'How to Enter', value: 'Click the "Enter Giveaway" button below to enter!', inline: false }
         ],
         color: parseInt(config.embedColor.replace('#', ''), 16),
         footer: {
-          text: `Giveaway ID: ${giveawayId}`,
+          text: `ID: ${giveawayId.substring(giveawayId.length - 8)}`,
         },
         timestamp: new Date().toISOString()
       };
@@ -548,26 +544,29 @@ async function endGiveaway(client, giveawayId) {
         .setEmoji('🔄')
     );
     
-    // Update the giveaway message
+    // Update the giveaway message with a more compact format
     const winnerText = winners.length > 0 
       ? winners.map(id => `<@${id}>`).join(', ')
       : 'No valid participants';
     
     const embed = message.embeds[0];
-    const fields = [...embed.fields];
-    
-    // Update fields
-    fields.push({
-      name: 'Winners',
-      value: winnerText,
-      inline: false
-    });
+    const embedDesc = embed.description.split('\n');
+    // Find all lines before the "Click the button" line
+    const descriptionContent = embedDesc
+      .slice(0, embedDesc.findIndex(line => line.includes('Click the button')) || 0)
+      .join('\n');
     
     const updatedEmbed = {
-      ...embed.toJSON(),
       title: `🎊 GIVEAWAY ENDED: ${giveaway.prize}`,
-      fields,
-      color: winners.length > 0 ? parseInt(config.successColor.replace('#', ''), 16) : parseInt(config.errorColor.replace('#', ''), 16)
+      description: `${descriptionContent ? `${descriptionContent}\n\n` : ''}**Winners:** ${winnerText}`,
+      fields: [
+        { name: 'Total Entries', value: Object.values(giveaway.participantEntries || {}).reduce((sum, entry) => sum + entry, 0).toString(), inline: true }
+      ],
+      color: winners.length > 0 ? parseInt(config.successColor.replace('#', ''), 16) : parseInt(config.errorColor.replace('#', ''), 16),
+      footer: {
+        text: `ID: ${giveaway.id.substring(giveaway.id.length - 8)} | Ended`
+      },
+      timestamp: new Date().toISOString()
     };
     
     await message.edit({ 

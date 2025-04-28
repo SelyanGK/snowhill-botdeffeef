@@ -2,8 +2,7 @@
   "enabled": true,
   "noPingRoleId": null,
   "bypassRoleId": null,
-  "muteRoleId": null,
   "muteDuration": 15,
-  "warnMessage": "You have been muted for pinging a user with the no-ping role.",
+  "warnMessage": "You have been timed out for pinging a user with the no-ping role.",
   "logChannelId": null
 }

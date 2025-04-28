@@ -1,9 +1,5 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const logger = require('../../utils/logger');
-const Database = require('../../utils/database');
-
-// Anti-ping database
-const antipingDb = new Database('antiping.json');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -32,16 +28,8 @@ module.exports = {
     try {
       const member = await interaction.guild.members.fetch(targetUser.id);
       
-      // Get anti-ping configuration to find mute role
-      const config = antipingDb.read();
-      
       // Remove timeout
       await member.timeout(null, `Unmuted by ${interaction.user.tag}: ${reason}`);
-      
-      // If mute role exists, try to remove it
-      if (config.muteRoleId && member.roles.cache.has(config.muteRoleId)) {
-        await member.roles.remove(config.muteRoleId, `Unmuted by ${interaction.user.tag}: ${reason}`);
-      }
       
       // Reply to the interaction
       await interaction.reply({

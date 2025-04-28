@@ -33,14 +33,7 @@ module.exports = {
           option.setName('role')
             .setDescription('The role that can ping no-ping roles')
             .setRequired(true)))
-    .addSubcommand(subcommand =>
-      subcommand
-        .setName('mute')
-        .setDescription('Set the mute role')
-        .addRoleOption(option =>
-          option.setName('role')
-            .setDescription('The role given to users who violate the no-ping rule')
-            .setRequired(true)))
+    // Removed mute role subcommand as we're only using Discord's timeout system
     .addSubcommand(subcommand =>
       subcommand
         .setName('duration')
@@ -123,18 +116,7 @@ module.exports = {
         logger.info(`Bypass role set to ${bypassRole.name} (${bypassRole.id}) by ${interaction.user.tag}`);
         break;
         
-      case 'mute':
-        const muteRole = interaction.options.getRole('role');
-        config.muteRoleId = muteRole.id;
-        antipingDb.write(config);
-        
-        await interaction.reply({
-          content: `Set mute role to ${muteRole.name}.`,
-          ephemeral: true
-        });
-        
-        logger.info(`Mute role set to ${muteRole.name} (${muteRole.id}) by ${interaction.user.tag}`);
-        break;
+      // Mute role case removed as we're using timeout only
         
       case 'duration':
         const minutes = interaction.options.getInteger('minutes');
@@ -193,9 +175,7 @@ module.exports = {
           ? interaction.guild.roles.cache.get(config.bypassRoleId)?.name || 'Unknown Role'
           : 'Not set';
           
-        const muteRoleName = config.muteRoleId
-          ? interaction.guild.roles.cache.get(config.muteRoleId)?.name || 'Unknown Role'
-          : 'Not set';
+        // Mute role removed as we're using timeouts only
           
         const logChannelName = config.logChannelId
           ? interaction.guild.channels.cache.get(config.logChannelId)?.toString() || 'Unknown Channel'
@@ -208,8 +188,7 @@ module.exports = {
               { name: 'Enabled', value: config.enabled ? 'Yes' : 'No', inline: true },
               { name: 'No-Ping Role', value: nopingRoleName, inline: true },
               { name: 'Bypass Role', value: bypassRoleName, inline: true },
-              { name: 'Mute Role', value: muteRoleName, inline: true },
-              { name: 'Mute Duration', value: `${config.muteDuration} minutes`, inline: true },
+              { name: 'Timeout Duration', value: `${config.muteDuration} minutes`, inline: true },
               { name: 'Log Channel', value: logChannelName, inline: true },
               { name: 'Warning Message', value: config.warnMessage || 'Not set' }
             ],
