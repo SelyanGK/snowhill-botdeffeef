@@ -1,0 +1,12 @@
+{
+  "token": "",
+  "clientId": "YOUR_CLIENT_ID",
+  "guildId": "YOUR_GUILD_ID",
+  "serverName": "Snowhill",
+  "embedColor": "#3498db",
+  "errorColor": "#e74c3c",
+  "successColor": "#2ecc71",
+  "warningColor": "#f39c12",
+  "botOwners": [],
+  "defaultCooldown": 3
+}
