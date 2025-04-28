@@ -1,1 +1,21 @@
-[]
+[
+  {
+    "id": "1745872828670",
+    "prize": "test",
+    "description": "",
+    "endTime": 1745872888670,
+    "channelId": "1364548893961879687",
+    "messageId": "1366514430023700643",
+    "hostId": "839580152774000721",
+    "winnerCount": 1,
+    "requiredRoleId": null,
+    "participants": [
+      "839580152774000721"
+    ],
+    "ended": true,
+    "endedAt": 1745872888864,
+    "winners": [
+      "839580152774000721"
+    ]
+  }
+]

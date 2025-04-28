@@ -36,7 +36,29 @@ module.exports = {
         .setMaxValue(10))
     .addRoleOption(option => 
       option.setName('required_role')
-        .setDescription('Role required to enter the giveaway')
+        .setDescription('Primary role required to enter the giveaway')
+        .setRequired(false))
+    .addRoleOption(option => 
+      option.setName('required_role2')
+        .setDescription('Secondary role required to enter the giveaway')
+        .setRequired(false))
+    .addStringOption(option => 
+      option.setName('join_days')
+        .setDescription('Min. days user must be in server (e.g., 7 for a week)')
+        .setRequired(false))
+    .addRoleOption(option => 
+      option.setName('bonus_role')
+        .setDescription('Role that receives bonus entries')
+        .setRequired(false))
+    .addIntegerOption(option => 
+      option.setName('bonus_entries')
+        .setDescription('Number of bonus entries for bonus role (1-5)')
+        .setRequired(false)
+        .setMinValue(1)
+        .setMaxValue(5))
+    .addStringOption(option => 
+      option.setName('winner_message')
+        .setDescription('Custom message to display to winners')
         .setRequired(false))
     .addChannelOption(option => 
       option.setName('channel')
@@ -59,6 +81,11 @@ module.exports = {
     const durationStr = interaction.options.getString('duration');
     const winnerCount = interaction.options.getInteger('winners');
     const requiredRole = interaction.options.getRole('required_role');
+    const requiredRole2 = interaction.options.getRole('required_role2');
+    const joinDaysStr = interaction.options.getString('join_days');
+    const bonusRole = interaction.options.getRole('bonus_role');
+    const bonusEntries = interaction.options.getInteger('bonus_entries') || 1;
+    const winnerMessage = interaction.options.getString('winner_message');
     const channel = interaction.options.getChannel('channel') || interaction.channel;
     const description = interaction.options.getString('description') || '';
     
@@ -69,6 +96,18 @@ module.exports = {
         content: 'Invalid duration format. Please use a format like 1d, 12h, 30m, or 60s.',
         ephemeral: true
       });
+    }
+    
+    // Parse join days if provided
+    let joinDays = 0;
+    if (joinDaysStr) {
+      joinDays = parseInt(joinDaysStr);
+      if (isNaN(joinDays) || joinDays < 0) {
+        return interaction.reply({
+          content: 'Invalid join days. Please enter a positive number.',
+          ephemeral: true
+        });
+      }
     }
     
     // Check if channel is a text channel
@@ -107,16 +146,41 @@ module.exports = {
       
       const row = new ActionRowBuilder().addComponents(joinButton);
       
+      // Build entry requirements text
+      let requirementsText = '';
+      const requirements = [];
+      
+      if (requiredRole) {
+        requirements.push(`• Have the <@&${requiredRole.id}> role`);
+      }
+      
+      if (requiredRole2) {
+        requirements.push(`• Have the <@&${requiredRole2.id}> role`);
+      }
+      
+      if (joinDays > 0) {
+        const joinTimeText = joinDays === 1 ? '1 day' : `${joinDays} days`;
+        requirements.push(`• Be a server member for at least ${joinTimeText}`);
+      }
+      
+      if (bonusRole) {
+        const bonusText = bonusEntries === 1 ? 'entry' : 'entries';
+        requirements.push(`• <@&${bonusRole.id}> role receives ${bonusEntries} bonus ${bonusText}`);
+      }
+      
+      if (requirements.length > 0) {
+        requirementsText = `**Entry Requirements:**\n${requirements.join('\n')}\n\n`;
+      }
+      
       // Create giveaway embed
       const giveawayEmbed = {
         title: `🎉 GIVEAWAY: ${prize}`,
-        description: description ? `${description}\n\n` : '',
+        description: `${description ? `${description}\n\n` : ''}${requirementsText}`,
         fields: [
           { name: 'Ends At', value: `<t:${Math.floor(endTime / 1000)}:R> (<t:${Math.floor(endTime / 1000)}:F>)`, inline: true },
           { name: 'Hosted By', value: `<@${interaction.user.id}>`, inline: true },
           { name: 'Winners', value: winnerCount.toString(), inline: true },
           { name: 'Entries', value: '0', inline: true },
-          ...(requiredRole ? [{ name: 'Required Role', value: `<@&${requiredRole.id}>`, inline: true }] : []),
           { name: 'How to Enter', value: 'Click the "Enter Giveaway" button below to enter!', inline: false }
         ],
         color: parseInt(config.embedColor.replace('#', ''), 16),
@@ -143,7 +207,13 @@ module.exports = {
         hostId: interaction.user.id,
         winnerCount,
         requiredRoleId: requiredRole ? requiredRole.id : null,
+        requiredRoleId2: requiredRole2 ? requiredRole2.id : null,
+        joinDays: joinDays,
+        bonusRoleId: bonusRole ? bonusRole.id : null,
+        bonusEntries: bonusEntries,
+        winnerMessage: winnerMessage || null,
         participants: [],
+        participantEntries: {}, // Map user IDs to number of entries
         ended: false
       };
       
@@ -157,16 +227,35 @@ module.exports = {
         endGiveaway(interaction.client, giveawayId);
       }, duration);
       
+      // Prepare fields for the success message
+      const successFields = [
+        { name: 'Duration', value: formatDuration(duration), inline: true },
+        { name: 'Winners', value: winnerCount.toString(), inline: true }
+      ];
+      
+      // Add requirements to the success message if any
+      if (requiredRole) {
+        successFields.push({ name: 'Required Role', value: requiredRole.name, inline: true });
+      }
+      
+      if (requiredRole2) {
+        successFields.push({ name: 'Required Role 2', value: requiredRole2.name, inline: true });
+      }
+      
+      if (joinDays > 0) {
+        successFields.push({ name: 'Member For', value: `${joinDays} days`, inline: true });
+      }
+      
+      if (bonusRole) {
+        successFields.push({ name: 'Bonus Role', value: `${bonusRole.name} (+${bonusEntries})`, inline: true });
+      }
+      
       // Success message
       await interaction.editReply({
         embeds: [{
           title: '✅ Giveaway Created',
           description: `Giveaway for **${prize}** has been created in ${channel}.`,
-          fields: [
-            { name: 'Duration', value: formatDuration(duration), inline: true },
-            { name: 'Winners', value: winnerCount.toString(), inline: true },
-            ...(requiredRole ? [{ name: 'Required Role', value: requiredRole.name, inline: true }] : [])
-          ],
+          fields: successFields,
           color: parseInt(config.successColor.replace('#', ''), 16),
           timestamp: new Date().toISOString()
         }]
@@ -256,13 +345,36 @@ module.exports = {
       });
     }
     
-    // Check if user has required role
-    if (giveaway.requiredRoleId) {
-      const member = await interaction.guild.members.fetch(interaction.user.id);
-      if (!member.roles.cache.has(giveaway.requiredRoleId)) {
-        const roleName = interaction.guild.roles.cache.get(giveaway.requiredRoleId)?.name || 'Required Role';
+    // Fetch member for role and join date checks
+    const member = await interaction.guild.members.fetch(interaction.user.id);
+    
+    // Check if user meets the role requirements
+    if (giveaway.requiredRoleId && !member.roles.cache.has(giveaway.requiredRoleId)) {
+      const roleName = interaction.guild.roles.cache.get(giveaway.requiredRoleId)?.name || 'Required Role';
+      return interaction.reply({
+        content: `You need the ${roleName} role to enter this giveaway.`,
+        ephemeral: true
+      });
+    }
+    
+    // Check secondary role requirement if set
+    if (giveaway.requiredRoleId2 && !member.roles.cache.has(giveaway.requiredRoleId2)) {
+      const roleName = interaction.guild.roles.cache.get(giveaway.requiredRoleId2)?.name || 'Required Role';
+      return interaction.reply({
+        content: `You need the ${roleName} role to enter this giveaway.`,
+        ephemeral: true
+      });
+    }
+    
+    // Check join date requirement if set
+    if (giveaway.joinDays > 0) {
+      const joinedAt = member.joinedAt;
+      const daysAsMembers = (Date.now() - joinedAt.getTime()) / (1000 * 60 * 60 * 24);
+      
+      if (daysAsMembers < giveaway.joinDays) {
+        const timeRequired = giveaway.joinDays === 1 ? '1 day' : `${giveaway.joinDays} days`;
         return interaction.reply({
-          content: `You need the ${roleName} role to enter this giveaway.`,
+          content: `You need to be a member of this server for at least ${timeRequired} to enter this giveaway. You've been a member for ${Math.floor(daysAsMembers)} days.`,
           ephemeral: true
         });
       }
@@ -276,8 +388,30 @@ module.exports = {
       });
     }
     
+    // Calculate entries for this user
+    let entries = 1;
+    let bonusEntryMessage = '';
+    
+    // Check if the user has the bonus role
+    if (giveaway.bonusRoleId && member.roles.cache.has(giveaway.bonusRoleId)) {
+      entries += giveaway.bonusEntries;
+      const roleName = interaction.guild.roles.cache.get(giveaway.bonusRoleId)?.name || 'Bonus Role';
+      bonusEntryMessage = `\nYou received ${giveaway.bonusEntries} bonus ${giveaway.bonusEntries === 1 ? 'entry' : 'entries'} for having the ${roleName} role!`;
+    }
+    
     // Add user to participants
     giveaway.participants.push(interaction.user.id);
+    
+    // Store the number of entries for this user
+    if (!giveaway.participantEntries) {
+      giveaway.participantEntries = {};
+    }
+    giveaway.participantEntries[interaction.user.id] = entries;
+    
+    // Calculate total entries
+    const totalEntries = Object.values(giveaway.participantEntries || {}).reduce((sum, entry) => sum + entry, 0);
+    
+    // Update giveaway in database
     giveaways[giveawayIndex] = giveaway;
     giveawayDb.write(giveaways);
     
@@ -295,7 +429,7 @@ module.exports = {
         if (entriesIndex !== -1) {
           fields[entriesIndex] = {
             name: 'Entries',
-            value: giveaway.participants.length.toString(),
+            value: totalEntries.toString(),
             inline: true
           };
         }
@@ -313,7 +447,7 @@ module.exports = {
     
     // Success message to user
     return interaction.reply({
-      content: `You have entered the giveaway for **${giveaway.prize}**! Good luck!`,
+      content: `You have entered the giveaway for **${giveaway.prize}**!${bonusEntryMessage} You have ${entries} ${entries === 1 ? 'entry' : 'entries'}. Good luck!`,
       ephemeral: true
     });
   }
@@ -383,8 +517,8 @@ async function endGiveaway(client, giveawayId) {
   giveaway.ended = true;
   giveaway.endedAt = Date.now();
   
-  // Find winners
-  const winners = pickWinners(giveaway.participants, giveaway.winnerCount);
+  // Find winners, accounting for bonus entries
+  const winners = pickWinners(giveaway.participants, giveaway.winnerCount, giveaway.participantEntries);
   giveaway.winners = winners;
   
   // Save changes
@@ -443,8 +577,15 @@ async function endGiveaway(client, giveawayId) {
     
     // Send a winner announcement
     if (winners.length > 0) {
+      // Prepare winner message with custom text if provided
+      let winnerContent = `Congratulations ${winnerText}! You won **${giveaway.prize}**!\n[Jump to Giveaway](${message.url})`;
+      
+      if (giveaway.winnerMessage) {
+        winnerContent += `\n\n${giveaway.winnerMessage}`;
+      }
+      
       await channel.send({
-        content: `Congratulations ${winnerText}! You won **${giveaway.prize}**!\n[Jump to Giveaway](${message.url})`,
+        content: winnerContent,
         allowedMentions: { users: winners }
       });
       
@@ -462,12 +603,13 @@ async function endGiveaway(client, giveawayId) {
 }
 
 /**
- * Picks random winners from an array of participants
+ * Picks random winners from an array of participants, accounting for bonus entries
  * @param {string[]} participants - Array of participant IDs
  * @param {number} winnerCount - Number of winners to pick
+ * @param {Object} entriesMap - Map of user IDs to their entry count
  * @returns {string[]} - Array of winner IDs
  */
-function pickWinners(participants, winnerCount) {
+function pickWinners(participants, winnerCount, entriesMap = {}) {
   // If there are no participants, return empty array
   if (participants.length === 0) {
     return [];
@@ -478,18 +620,42 @@ function pickWinners(participants, winnerCount) {
     return [...participants];
   }
   
-  // Randomly select winners
+  // Create weighted entry pool for bonus entries
+  const entryPool = [];
+  
+  participants.forEach(userId => {
+    // Get number of entries for this user (default to 1)
+    const entryCount = entriesMap[userId] || 1;
+    
+    // Add user to the pool multiple times based on entry count
+    for (let i = 0; i < entryCount; i++) {
+      entryPool.push(userId);
+    }
+  });
+  
+  // Randomly select winners from weighted pool
   const winners = [];
-  const participantsCopy = [...participants];
+  const selectedIndices = new Set(); // To track which indices were selected
   
   for (let i = 0; i < winnerCount; i++) {
-    const winnerIndex = Math.floor(Math.random() * participantsCopy.length);
-    const winner = participantsCopy[winnerIndex];
+    if (winners.length >= participants.length) break; // Prevent infinite loop
     
-    winners.push(winner);
+    let attempts = 0;
+    let winnerFound = false;
     
-    // Remove the winner to avoid duplicate winners
-    participantsCopy.splice(winnerIndex, 1);
+    // Try to find a winner up to 100 times (avoid infinite loop)
+    while (!winnerFound && attempts < 100) {
+      const randomIndex = Math.floor(Math.random() * entryPool.length);
+      const potentialWinner = entryPool[randomIndex];
+      
+      // If this user hasn't been selected yet, add them as a winner
+      if (!winners.includes(potentialWinner)) {
+        winners.push(potentialWinner);
+        winnerFound = true;
+      }
+      
+      attempts++;
+    }
   }
   
   return winners;
