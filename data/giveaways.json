@@ -16,6 +16,29 @@
     "endedAt": 1745872888864,
     "winners": [
       "839580152774000721"
-    ]
+    ],
+    "rerolled": true,
+    "lastReroll": 1745904563334
+  },
+  {
+    "id": "1745904664849",
+    "prize": "test",
+    "description": "",
+    "endTime": 1745904724849,
+    "channelId": "1364548893961879687",
+    "messageId": "1366647960619843675",
+    "hostId": "839580152774000721",
+    "winnerCount": 1,
+    "requiredRoleId": null,
+    "requiredRoleId2": null,
+    "joinDays": 0,
+    "bonusRoleId": null,
+    "bonusEntries": 1,
+    "winnerMessage": null,
+    "participants": [],
+    "participantEntries": {},
+    "ended": true,
+    "endedAt": 1745904725074,
+    "winners": []
   }
 ]

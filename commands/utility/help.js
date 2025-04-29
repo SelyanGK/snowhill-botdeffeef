@@ -96,7 +96,28 @@ async function showCategoryCommands(interaction, category) {
     const name = command.data.name;
     const description = command.data.description;
     
-    embed.addFields({ name: `/${name}`, value: description || 'No description available' });
+    // Special handling for antiping command to show all its subcommands
+    if (name === 'antiping' && category === 'moderation') {
+      embed.addFields({ 
+        name: `/${name}`, 
+        value: "Anti-ping protection system with the following subcommands:"
+      });
+      
+      embed.addFields({ 
+        name: "Configure Protection",
+        value: 
+          "/antiping view - View current configuration\n" +
+          "/antiping enable - Enable the anti-ping system\n" +
+          "/antiping disable - Disable the anti-ping system\n" +
+          "/antiping addprotectedrole - Set a role that cannot be pinged\n" +
+          "/antiping addbypassrole - Set a role that can ping protected roles\n" +
+          "/antiping muteduration - Set the timeout duration for violations\n" +
+          "/antiping message - Set the warning message\n" +
+          "/antiping log - Set the log channel"
+      });
+    } else {
+      embed.addFields({ name: `/${name}`, value: description || 'No description available' });
+    }
   }
   
   await interaction.reply({ embeds: [embed] });

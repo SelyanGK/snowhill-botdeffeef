@@ -1,4 +1,4 @@
-const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
 const Database = require('../../utils/database');
 const logger = require('../../utils/logger');
 
@@ -12,35 +12,34 @@ module.exports = {
     .addSubcommand(subcommand =>
       subcommand
         .setName('enable')
-        .setDescription('Enable or disable the anti-ping system')
-        .addBooleanOption(option =>
-          option.setName('status')
-            .setDescription('Enable or disable the system')
-            .setRequired(true)))
+        .setDescription('Enable the anti-ping system'))
     .addSubcommand(subcommand =>
       subcommand
-        .setName('noping')
-        .setDescription('Set the no-ping role')
+        .setName('disable')
+        .setDescription('Disable the anti-ping system'))
+    .addSubcommand(subcommand =>
+      subcommand
+        .setName('addprotectedrole')
+        .setDescription('Add a role that cannot be pinged')
         .addRoleOption(option =>
           option.setName('role')
             .setDescription('The role that cannot be pinged')
             .setRequired(true)))
     .addSubcommand(subcommand =>
       subcommand
-        .setName('bypass')
-        .setDescription('Set the bypass role')
+        .setName('addbypassrole')
+        .setDescription('Add a role that can ping protected roles')
         .addRoleOption(option =>
           option.setName('role')
-            .setDescription('The role that can ping no-ping roles')
+            .setDescription('The role that can ping protected roles')
             .setRequired(true)))
-    // Removed mute role subcommand as we're only using Discord's timeout system
     .addSubcommand(subcommand =>
       subcommand
-        .setName('duration')
-        .setDescription('Set the mute duration')
+        .setName('muteduration')
+        .setDescription('Set the timeout duration')
         .addIntegerOption(option =>
           option.setName('minutes')
-            .setDescription('Duration of the mute in minutes')
+            .setDescription('Duration of the timeout in minutes')
             .setRequired(true)
             .setMinValue(1)
             .setMaxValue(1440)))
@@ -50,7 +49,7 @@ module.exports = {
         .setDescription('Set the warning message')
         .addStringOption(option =>
           option.setName('text')
-            .setDescription('Message sent to users who are muted')
+            .setDescription('Message sent to users who violate the rules')
             .setRequired(true)))
     .addSubcommand(subcommand =>
       subcommand
@@ -62,7 +61,7 @@ module.exports = {
             .setRequired(true)))
     .addSubcommand(subcommand =>
       subcommand
-        .setName('status')
+        .setName('view')
         .setDescription('View the current anti-ping configuration'))
     .setDefaultMemberPermissions(PermissionFlagsBits.ModerateMembers),
 
@@ -78,57 +77,66 @@ module.exports = {
 
     switch (subcommand) {
       case 'enable':
-        const status = interaction.options.getBoolean('status');
-        config.enabled = status;
+        config.enabled = true;
         antipingDb.write(config);
         
         await interaction.reply({
-          content: `Anti-ping system has been ${status ? 'enabled' : 'disabled'}.`,
+          content: `Anti-ping protection system has been **enabled**.`,
           ephemeral: true
         });
         
-        logger.info(`Anti-ping system ${status ? 'enabled' : 'disabled'} by ${interaction.user.tag}`);
+        logger.info(`Anti-ping system enabled by ${interaction.user.tag}`);
         break;
-        
-      case 'noping':
-        const nopingRole = interaction.options.getRole('role');
-        config.noPingRoleId = nopingRole.id;
+
+      case 'disable':
+        config.enabled = false;
         antipingDb.write(config);
         
         await interaction.reply({
-          content: `Set no-ping role to ${nopingRole.name}.`,
+          content: `Anti-ping protection system has been **disabled**.`,
           ephemeral: true
         });
         
-        logger.info(`No-ping role set to ${nopingRole.name} (${nopingRole.id}) by ${interaction.user.tag}`);
+        logger.info(`Anti-ping system disabled by ${interaction.user.tag}`);
         break;
         
-      case 'bypass':
+      case 'addprotectedrole':
+        const protectedRole = interaction.options.getRole('role');
+        config.noPingRoleId = protectedRole.id;
+        antipingDb.write(config);
+        
+        await interaction.reply({
+          content: `Set protected role to **${protectedRole.name}**. Members with this role cannot be pinged unless by users with bypass role.`,
+          ephemeral: true
+        });
+        
+        logger.info(`Protected role set to ${protectedRole.name} (${protectedRole.id}) by ${interaction.user.tag}`);
+        break;
+        
+      case 'addbypassrole':
         const bypassRole = interaction.options.getRole('role');
         config.bypassRoleId = bypassRole.id;
         antipingDb.write(config);
         
         await interaction.reply({
-          content: `Set bypass role to ${bypassRole.name}.`,
+          content: `Set bypass role to **${bypassRole.name}**. Members with this role can ping protected roles.`,
           ephemeral: true
         });
         
         logger.info(`Bypass role set to ${bypassRole.name} (${bypassRole.id}) by ${interaction.user.tag}`);
         break;
         
-      // Mute role case removed as we're using timeout only
-        
-      case 'duration':
+      case 'muteduration':
         const minutes = interaction.options.getInteger('minutes');
         config.muteDuration = minutes;
         antipingDb.write(config);
         
         await interaction.reply({
-          content: `Set mute duration to ${minutes} minutes.`,
+          content: `Set timeout duration to **${minutes} minutes** for anti-ping violations.`,
           ephemeral: true
         });
         
-        logger.info(`Mute duration set to ${minutes} minutes by ${interaction.user.tag}`);
+        logger.info(`Timeout duration set to ${minutes} minutes by ${interaction.user.tag}`);
         break;
         
       case 'message':
@@ -159,14 +167,14 @@ module.exports = {
         antipingDb.write(config);
         
         await interaction.reply({
-          content: `Set log channel to ${channel}.`,
+          content: `Anti-ping violations will now be logged in ${channel}.`,
           ephemeral: true
         });
         
         logger.info(`Log channel set to ${channel.name} (${channel.id}) by ${interaction.user.tag}`);
         break;
         
-      case 'status':
+      case 'view':
         const nopingRoleName = config.noPingRoleId 
           ? interaction.guild.roles.cache.get(config.noPingRoleId)?.name || 'Unknown Role'
           : 'Not set';
@@ -175,28 +183,36 @@ module.exports = {
           ? interaction.guild.roles.cache.get(config.bypassRoleId)?.name || 'Unknown Role'
           : 'Not set';
           
-        // Mute role removed as we're using timeouts only
-          
         const logChannelName = config.logChannelId
           ? interaction.guild.channels.cache.get(config.logChannelId)?.toString() || 'Unknown Channel'
           : 'Not set';
         
+        const embed = new EmbedBuilder()
+          .setTitle('🛡️ Anti-Ping Protection System')
+          .setDescription(`The anti-ping system ${config.enabled ? 'is **enabled**' : 'is currently **disabled**'}`)
+          .addFields([
+            { name: 'Status', value: config.enabled ? '✅ Enabled' : '❌ Disabled', inline: true },
+            { name: 'Protected Role', value: nopingRoleName, inline: true },
+            { name: 'Bypass Role', value: bypassRoleName, inline: true },
+            { name: 'Timeout Duration', value: `${config.muteDuration} minutes`, inline: true },
+            { name: 'Log Channel', value: logChannelName, inline: true },
+            { name: 'Warning Message', value: config.warnMessage || 'Not set' }
+          ])
+          .setColor(config.enabled ? 0x00FF00 : 0xFF0000)
+          .setFooter({ text: 'Use /antiping commands to configure the system' })
+          .setTimestamp();
+        
         await interaction.reply({
-          embeds: [{
-            title: 'Anti-Ping System Status',
-            fields: [
-              { name: 'Enabled', value: config.enabled ? 'Yes' : 'No', inline: true },
-              { name: 'No-Ping Role', value: nopingRoleName, inline: true },
-              { name: 'Bypass Role', value: bypassRoleName, inline: true },
-              { name: 'Timeout Duration', value: `${config.muteDuration} minutes`, inline: true },
-              { name: 'Log Channel', value: logChannelName, inline: true },
-              { name: 'Warning Message', value: config.warnMessage || 'Not set' }
-            ],
-            color: 0x3498db
-          }],
+          embeds: [embed],
           ephemeral: true
         });
         break;
+        
+      default:
+        await interaction.reply({
+          content: 'Unknown subcommand. Please use one of the available anti-ping commands.',
+          ephemeral: true
+        });
     }
   }
 };
