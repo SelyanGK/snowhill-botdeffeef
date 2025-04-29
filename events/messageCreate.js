@@ -140,16 +140,31 @@ module.exports = {
           // Apply timeout (Discord's built-in mute)
           await message.member.timeout(muteDuration * 60 * 1000, 'Anti-ping violation');
           
-          // Send warning to the user via DM
-          const warnMessage = antipingConfig.warnMessage || 'You have been timed out for pinging a user with the no-ping role.';
+          // Format the duration in a human-readable way
+          let formattedDuration;
+          if (muteDuration >= 1440) { // more than 24 hours
+            const days = Math.floor(muteDuration / 1440);
+            formattedDuration = `${days} day${days > 1 ? 's' : ''}`;
+          } else if (muteDuration >= 60) { // more than 60 minutes
+            const hours = Math.floor(muteDuration / 60);
+            formattedDuration = `${hours} hour${hours > 1 ? 's' : ''}`;
+          } else {
+            formattedDuration = `${muteDuration} minute${muteDuration > 1 ? 's' : ''}`;
+          }
+          
+          // Create the warning message
+          const warnMessage = antipingConfig.warnMessage || 
+            `Please don't ping this person! You have been timeouted for ${formattedDuration}.`;
+            
           try {
+            // Send warning to the user via DM
             const dmChannel = await message.author.createDM();
             await dmChannel.send({
               embeds: [{
                 title: '⚠️ Anti-Ping Violation',
                 description: warnMessage,
                 fields: [
-                  { name: 'Duration', value: `${muteDuration} minutes`, inline: true },
+                  { name: 'Duration', value: formattedDuration, inline: true },
                   { name: 'Server', value: message.guild.name, inline: true },
                   { name: 'Expires', value: `<t:${Math.floor(muteEndTime / 1000)}:R>`, inline: true }
                 ],
@@ -161,7 +176,7 @@ module.exports = {
             // If DM fails, send a message in the channel that auto-deletes after 20 seconds
             try {
               const notificationMsg = await message.channel.send({
-                content: `${message.author}, ${warnMessage} Duration: ${muteDuration} minutes.`,
+                content: `${message.author}, ${warnMessage}`,
                 allowedMentions: { users: [message.author.id] }
               });
               
