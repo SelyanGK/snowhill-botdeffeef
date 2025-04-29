@@ -98,12 +98,36 @@ module.exports = {
       // Check if the message author has the bypass role
       if (antipingConfig.bypassRoleId && message.member.roles.cache.has(antipingConfig.bypassRoleId)) return;
       
+      // Get message content and replied message if any
+      const isReply = message.reference && message.reference.messageId;
+      let repliedMessage = null;
+      
+      if (isReply) {
+        try {
+          // Get the message being replied to
+          repliedMessage = await message.channel.messages.fetch(message.reference.messageId);
+        } catch (error) {
+          logger.warn(`Failed to fetch replied message: ${error.message}`);
+        }
+      }
+      
+      // Create a set of exempt user IDs (users from the reply)
+      const exemptUserIds = new Set();
+      
+      if (repliedMessage) {
+        // Add the author of the replied message to exempt list
+        exemptUserIds.add(repliedMessage.author.id);
+      }
+      
       // Check if any of the mentioned users have the no-ping role
       let hasViolation = false;
       let violatedUser = null;
       
       // Check user mentions
       for (const [userId, user] of message.mentions.users) {
+        // Skip if this is a replied-to user (allowed to be pinged in a reply)
+        if (exemptUserIds.has(userId)) continue;
+        
         try {
           const member = await message.guild.members.fetch(userId);
           
@@ -154,7 +178,7 @@ module.exports = {
           
           // Create the warning message
           const warnMessage = antipingConfig.warnMessage || 
-            `Please don't ping this person! You have been timeouted for ${formattedDuration}.`;
+            `Please don't ping that person. You have been timeouted for ${formattedDuration}.`;
             
           try {
             // Send warning to the user via DM
@@ -210,10 +234,21 @@ module.exports = {
             }
           }
           
-          logger.info(`Anti-ping violation: ${message.author.tag} (${message.author.id}) timed out for ${muteDuration} minutes`);
+          // Log the violation with additional info about the context
+          const isReplyContext = message.reference && message.reference.messageId ? 'in a reply' : 'in a regular message';
+          logger.info(`Anti-ping violation: ${message.author.tag} (${message.author.id}) timed out for ${muteDuration} minutes - Violation occurred ${isReplyContext}`);
         } catch (error) {
           logger.error(`Failed to timeout user for anti-ping violation: ${error.message}`);
         }
+      } else if (message.reference && message.reference.messageId && message.mentions.users.size > 0) {
+        // For debugging: log when a reply with mentions was allowed
+        const mentionedIds = Array.from(message.mentions.users.keys());
+        const exemptIds = Array.from(exemptUserIds);
+        const allowedReason = exemptIds.some(id => mentionedIds.includes(id)) ? 
+          'mentions were to the replied-to author (allowed)' : 
+          'no protected users were mentioned';
+          
+        logger.debug(`Reply with mentions was allowed: ${message.author.tag} replied to a message - ${allowedReason}`);
       }
     } catch (error) {
       logger.error(`Error checking anti-ping: ${error.message}`);
