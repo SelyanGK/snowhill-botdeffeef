@@ -185,24 +185,46 @@ async function rerollGiveaway(client, giveaway, winnerCount) {
     eligibleParticipants = [...giveaway.participants];
   }
   
-  // Pick new winners
-  const newWinners = [];
+  // Pick new winners, accounting for bonus entries
+  let newWinners = [];
   
   // If there are fewer eligible participants than requested winners, use all eligible
   if (eligibleParticipants.length <= winnerCount) {
-    newWinners.push(...eligibleParticipants);
+    newWinners = [...eligibleParticipants];
   } else {
-    // Randomly select winners
-    const eligibleCopy = [...eligibleParticipants];
+    // Create weighted entry pool for bonus entries
+    const entryPool = [];
     
+    eligibleParticipants.forEach(userId => {
+      // Get number of entries for this user (default to 1)
+      const entryCount = giveaway.participantEntries?.[userId] || 1;
+      
+      // Add user to the pool multiple times based on entry count
+      for (let i = 0; i < entryCount; i++) {
+        entryPool.push(userId);
+      }
+    });
+    
+    // Randomly select winners from weighted pool
     for (let i = 0; i < winnerCount; i++) {
-      const winnerIndex = Math.floor(Math.random() * eligibleCopy.length);
-      const winner = eligibleCopy[winnerIndex];
+      if (newWinners.length >= eligibleParticipants.length) break; // Prevent infinite loop
       
-      newWinners.push(winner);
+      let attempts = 0;
+      let winnerFound = false;
       
-      // Remove the winner to avoid duplicate winners
-      eligibleCopy.splice(winnerIndex, 1);
+      // Try to find a winner up to 100 times (avoid infinite loop)
+      while (!winnerFound && attempts < 100) {
+        const randomIndex = Math.floor(Math.random() * entryPool.length);
+        const potentialWinner = entryPool[randomIndex];
+        
+        // If this user hasn't been selected yet, add them as a winner
+        if (!newWinners.includes(potentialWinner)) {
+          newWinners.push(potentialWinner);
+          winnerFound = true;
+        }
+        
+        attempts++;
+      }
     }
   }
   
@@ -221,11 +243,39 @@ async function rerollGiveaway(client, giveaway, winnerCount) {
   // Format winners mention
   const winnerMentions = newWinners.map(id => `<@${id}>`).join(', ');
   
-  // Send announcement
-  await channel.send({
-    content: `Rerolled the giveaway for **${giveaway.prize}**!\nNew winner(s): ${winnerMentions}`,
+  // Import the animations utility
+  const animations = require('../../utils/animations');
+  
+  // Send initial announcement with animation (frame 0)
+  const animationMsg = await channel.send({
+    content: animations.createWinnerAnnouncement(giveaway.prize, winnerMentions, 0) + 
+            `\n**REROLLED!** [Jump to Giveaway](https://discord.com/channels/${channel.guild.id}/${channel.id}/${giveaway.messageId})`,
     allowedMentions: { users: newWinners }
   });
+  
+  // Animate the confetti (8 frames, 600ms delay)
+  for (let frame = 1; frame < 8; frame++) {
+    try {
+      // We use a setTimeout inside an IIFE to capture the current frame value
+      ((currentFrame) => {
+        setTimeout(async () => {
+          try {
+            // Update message with new animation frame
+            await animationMsg.edit({
+              content: animations.createWinnerAnnouncement(giveaway.prize, winnerMentions, currentFrame) + 
+                      `\n**REROLLED!** [Jump to Giveaway](https://discord.com/channels/${channel.guild.id}/${channel.id}/${giveaway.messageId})`,
+              allowedMentions: { users: newWinners }
+            });
+          } catch (editError) {
+            // Silently fail if we can't edit the message (it might have been deleted)
+            logger.debug(`Error updating reroll animation frame ${currentFrame}: ${editError.message}`);
+          }
+        }, currentFrame * 600); // 600ms between frames
+      })(frame);
+    } catch (animError) {
+      logger.debug(`Reroll animation error: ${animError.message}`);
+    }
+  }
   
   // Try to update the giveaway message
   try {

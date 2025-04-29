@@ -161,8 +161,13 @@ module.exports = {
             logger.error(`Failed to delete violating message: ${err.message}`);
           });
 
+          // Format a better reason for the timeout log
+          const timeoutReason = violatedUser 
+            ? `Anti-ping violation: Pinged protected user ${violatedUser.tag}` 
+            : `Anti-ping violation: Pinged protected role`;
+            
           // Apply timeout (Discord's built-in mute)
-          await message.member.timeout(muteDuration * 60 * 1000, 'Anti-ping violation');
+          await message.member.timeout(muteDuration * 60 * 1000, timeoutReason);
           
           // Format the duration in a human-readable way
           let formattedDuration;
@@ -220,7 +225,7 @@ module.exports = {
               await logChannel.send({
                 embeds: [{
                   title: 'Anti-Ping Violation',
-                  description: `${message.author} has been timed out for ${muteDuration} minutes for pinging a protected user.`,
+                  description: `${message.author} has been timed out for ${muteDuration} minutes for violating the anti-ping protection rules.`,
                   fields: [
                     { name: 'Offender', value: `${message.author.tag} (${message.author.id})`, inline: true },
                     { name: 'Violated User', value: violatedUser ? `${violatedUser.tag} (${violatedUser.id})` : 'Protected Role', inline: true },

@@ -20,7 +20,7 @@ module.exports = {
         .setDescription('Disable the anti-ping system'))
     .addSubcommand(subcommand =>
       subcommand
-        .setName('addrole')
+        .setName('addprotectedrole')
         .setDescription('Add a role that cannot be pinged')
         .addRoleOption(option =>
           option.setName('role')
@@ -92,9 +92,9 @@ module.exports = {
           '• `/antiping view` - View current configuration\n' +
           '• `/antiping enable` - Enable the anti-ping system\n' +
           '• `/antiping disable` - Disable the anti-ping system\n' +
-          '• `/antiping addrole` - Set a role that cannot be pinged\n' +
-          '• `/antiping addbypassrole` or `/antiping addbypass` - Set a role that can ping protected roles\n' +
-          '• `/antiping muteduration` - Set the timeout duration\n' +
+          '• `/antiping addprotectedrole` or `/antiping addrole` - Set a role that cannot be pinged\n' +
+          '• `/antiping addbypassrole`, `/antiping addbypass`, or `/antiping bypassrole` - Set a role that can ping protected roles\n' +
+          '• `/antiping muteduration` or `/antiping setduration` - Set the timeout duration\n' +
           '• `/antiping message` - Set the warning message\n' +
           '• `/antiping log` - Set the log channel'
       });
@@ -142,7 +142,8 @@ module.exports = {
         logger.info(`Anti-ping system disabled by ${interaction.user.tag}`);
         break;
         
-      case 'addrole': // This is the officially registered command name
+      case 'addprotectedrole': // This is the longer, more descriptive command name
+      case 'addrole': // This is the old registered command name
         const protectedRole = interaction.options.getRole('role');
         config.noPingRoleId = protectedRole.id;
         antipingDb.write(config);
@@ -161,7 +162,8 @@ module.exports = {
         break;
         
       case 'addbypassrole':
-      case 'addbypass': // Add alias for shorter command
+      case 'addbypass': // Add alias for shorter command  
+      case 'bypassrole': // Support for old command structure
         const bypassRole = interaction.options.getRole('role');
         config.bypassRoleId = bypassRole.id;
         antipingDb.write(config);
@@ -180,6 +182,7 @@ module.exports = {
         break;
         
       case 'muteduration':
+      case 'setduration': // Support for the command that's actually registered in Discord
         const minutes = interaction.options.getInteger('minutes');
         config.muteDuration = minutes;
         antipingDb.write(config);
@@ -312,9 +315,9 @@ module.exports = {
             '• `/antiping view` - View current configuration\n' +
             '• `/antiping enable` - Enable the anti-ping system\n' +
             '• `/antiping disable` - Disable the anti-ping system\n' +
-            '• `/antiping addrole` - Set a role that cannot be pinged\n' +
-            '• `/antiping addbypassrole` or `/antiping addbypass` - Set a role that can ping protected roles\n' +
-            '• `/antiping muteduration` - Set the timeout duration\n' +
+            '• `/antiping addprotectedrole` or `/antiping addrole` - Set a role that cannot be pinged\n' +
+            '• `/antiping addbypassrole`, `/antiping addbypass`, or `/antiping bypassrole` - Set a role that can ping protected roles\n' +
+            '• `/antiping muteduration` or `/antiping setduration` - Set the timeout duration\n' +
             '• `/antiping message` - Set the warning message\n' +
             '• `/antiping log` - Set the log channel'
         });

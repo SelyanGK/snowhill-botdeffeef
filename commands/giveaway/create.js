@@ -56,6 +56,25 @@ module.exports = {
         .setRequired(false)
         .setMinValue(1)
         .setMaxValue(5))
+    .addRoleOption(option => 
+      option.setName('bonus_role2')
+        .setDescription('Second role that receives bonus entries')
+        .setRequired(false))
+    .addIntegerOption(option => 
+      option.setName('bonus_entries2')
+        .setDescription('Number of bonus entries for second bonus role (1-5)')
+        .setRequired(false)
+        .setMinValue(1)
+        .setMaxValue(5))
+    .addIntegerOption(option => 
+      option.setName('min_level')
+        .setDescription('Minimum XP level required to enter (if your bot has a leveling system)')
+        .setRequired(false)
+        .setMinValue(1))
+    .addStringOption(option => 
+      option.setName('min_messages')
+        .setDescription('Minimum number of messages required in the server')
+        .setRequired(false))
     .addStringOption(option => 
       option.setName('winner_message')
         .setDescription('Custom message to display to winners')
@@ -85,6 +104,10 @@ module.exports = {
     const joinDaysStr = interaction.options.getString('join_days');
     const bonusRole = interaction.options.getRole('bonus_role');
     const bonusEntries = interaction.options.getInteger('bonus_entries') || 1;
+    const bonusRole2 = interaction.options.getRole('bonus_role2');
+    const bonusEntries2 = interaction.options.getInteger('bonus_entries2') || 1;
+    const minLevel = interaction.options.getInteger('min_level');
+    const minMessagesStr = interaction.options.getString('min_messages');
     const winnerMessage = interaction.options.getString('winner_message');
     const channel = interaction.options.getChannel('channel') || interaction.channel;
     const description = interaction.options.getString('description') || '';
@@ -168,6 +191,22 @@ module.exports = {
         requirements.push(`• <@&${bonusRole.id}> role receives ${bonusEntries} bonus ${bonusText}`);
       }
       
+      if (bonusRole2) {
+        const bonusText = bonusEntries2 === 1 ? 'entry' : 'entries';
+        requirements.push(`• <@&${bonusRole2.id}> role receives ${bonusEntries2} bonus ${bonusText}`);
+      }
+      
+      if (minLevel) {
+        requirements.push(`• Be at least level ${minLevel} in the server`);
+      }
+      
+      if (minMessagesStr) {
+        const minMessages = parseInt(minMessagesStr);
+        if (!isNaN(minMessages) && minMessages > 0) {
+          requirements.push(`• Have sent at least ${minMessages} message${minMessages === 1 ? '' : 's'} in the server`);
+        }
+      }
+      
       if (requirements.length > 0) {
         requirementsText = `**Entry Requirements:**\n${requirements.join('\n')}\n\n`;
       }
@@ -175,13 +214,15 @@ module.exports = {
       // Create a more compact giveaway embed
       const giveawayEmbed = {
         title: `🎉 GIVEAWAY: ${prize}`,
-        description: `${description ? `${description}\n\n` : ''}${requirementsText}Click the button below to enter!\nEnds: <t:${Math.floor(endTime / 1000)}:R> | Host: <@${interaction.user.id}> | Winners: ${winnerCount}`,
+        description: `${description ? `${description}\n\n` : ''}${requirementsText}Click the button below to enter!\nEnds: <t:${Math.floor(endTime / 1000)}:R> (<t:${Math.floor(endTime / 1000)}:f>)`,
         fields: [
+          { name: 'Host', value: `<@${interaction.user.id}>`, inline: true },
+          { name: 'Winners', value: `${winnerCount}`, inline: true },
           { name: 'Entries', value: '0', inline: true },
         ],
         color: parseInt(config.embedColor.replace('#', ''), 16),
         footer: {
-          text: `ID: ${giveawayId.substring(giveawayId.length - 8)}`,
+          text: `ID: ${giveawayId.substring(giveawayId.length - 8)} • Use /greroll to reroll winners`,
         },
         timestamp: new Date().toISOString()
       };
@@ -191,6 +232,13 @@ module.exports = {
         embeds: [giveawayEmbed],
         components: [row]
       });
+      
+      // Parse minimum messages if provided
+      let minMessages = 0;
+      if (minMessagesStr) {
+        minMessages = parseInt(minMessagesStr);
+        if (isNaN(minMessages)) minMessages = 0;
+      }
       
       // Store giveaway data
       const giveawayData = {
@@ -207,6 +255,10 @@ module.exports = {
         joinDays: joinDays,
         bonusRoleId: bonusRole ? bonusRole.id : null,
         bonusEntries: bonusEntries,
+        bonusRoleId2: bonusRole2 ? bonusRole2.id : null,
+        bonusEntries2: bonusEntries2,
+        minLevel: minLevel || 0,
+        minMessages: minMessages,
         winnerMessage: winnerMessage || null,
         participants: [],
         participantEntries: {}, // Map user IDs to number of entries
@@ -242,14 +294,40 @@ module.exports = {
         successFields.push({ name: 'Member For', value: `${joinDays} days`, inline: true });
       }
       
+      if (minLevel > 0) {
+        successFields.push({ name: 'Min Level', value: `${minLevel}`, inline: true });
+      }
+      
+      if (minMessages > 0) {
+        successFields.push({ name: 'Min Messages', value: `${minMessages}`, inline: true });
+      }
+      
       if (bonusRole) {
         successFields.push({ name: 'Bonus Role', value: `${bonusRole.name} (+${bonusEntries})`, inline: true });
       }
       
-      // Success message
+      if (bonusRole2) {
+        successFields.push({ name: 'Bonus Role 2', value: `${bonusRole2.name} (+${bonusEntries2})`, inline: true });
+      }
+      
+      // Import animations utility for a more festive message
+      const animations = require('../../utils/animations');
+
+      // Format duration for display
+      const durationDisplay = parseDuration(durationStr) >= 86400000 ? 
+        `${Math.floor(parseDuration(durationStr) / 86400000)} days` : 
+        formatDuration(parseDuration(durationStr));
+      
+      // Success message with fancy animation
       await interaction.editReply({
+        content: animations.createGiveawayLaunchMessage(
+          prize, 
+          winnerCount, 
+          durationDisplay,
+          channel.toString()
+        ),
         embeds: [{
-          title: '✅ Giveaway Created',
+          title: '🎉 Giveaway Created',
           description: `Giveaway for **${prize}** has been created in ${channel}.`,
           fields: successFields,
           color: parseInt(config.successColor.replace('#', ''), 16),
@@ -384,16 +462,65 @@ module.exports = {
       });
     }
     
+    // Check minimum level requirement if set
+    if (giveaway.minLevel && giveaway.minLevel > 0) {
+      // This is a placeholder for where you'd check user level against a database
+      // Since we don't have a leveling system implemented, we'll just log it for now
+      // In a real implementation, you would query your database for the user's level
+      
+      logger.debug(`Minimum level check for user ${interaction.user.tag} - Required: ${giveaway.minLevel}`);
+      
+      // Uncomment this when you have a real level system:
+      /*
+      const userLevel = await getLevelFromDatabase(interaction.user.id);
+      if (userLevel < giveaway.minLevel) {
+        return interaction.reply({
+          content: `You need to be at least level ${giveaway.minLevel} to enter this giveaway. You are currently level ${userLevel}.`,
+          ephemeral: true
+        });
+      }
+      */
+    }
+    
+    // Check minimum messages requirement if set
+    if (giveaway.minMessages && giveaway.minMessages > 0) {
+      // This is a placeholder for where you'd check message count against a database
+      // Since we don't track message count in this bot, we'll just log it for now
+      
+      logger.debug(`Minimum messages check for user ${interaction.user.tag} - Required: ${giveaway.minMessages}`);
+      
+      // Uncomment this when you have a real message tracking system:
+      /*
+      const messageCount = await getMessageCountFromDatabase(interaction.user.id);
+      if (messageCount < giveaway.minMessages) {
+        return interaction.reply({
+          content: `You need to have sent at least ${giveaway.minMessages} message${giveaway.minMessages === 1 ? '' : 's'} in this server to enter this giveaway. You have sent ${messageCount} message${messageCount === 1 ? '' : 's'}.`,
+          ephemeral: true
+        });
+      }
+      */
+    }
+    
     // Calculate entries for this user
     let entries = 1;
-    let bonusEntryMessage = '';
+    let bonusEntryMessages = [];
     
-    // Check if the user has the bonus role
+    // Check if the user has the first bonus role
     if (giveaway.bonusRoleId && member.roles.cache.has(giveaway.bonusRoleId)) {
       entries += giveaway.bonusEntries;
       const roleName = interaction.guild.roles.cache.get(giveaway.bonusRoleId)?.name || 'Bonus Role';
-      bonusEntryMessage = `\nYou received ${giveaway.bonusEntries} bonus ${giveaway.bonusEntries === 1 ? 'entry' : 'entries'} for having the ${roleName} role!`;
+      bonusEntryMessages.push(`You received ${giveaway.bonusEntries} bonus ${giveaway.bonusEntries === 1 ? 'entry' : 'entries'} for having the ${roleName} role!`);
     }
+    
+    // Check if the user has the second bonus role (if configured)
+    if (giveaway.bonusRoleId2 && member.roles.cache.has(giveaway.bonusRoleId2)) {
+      entries += giveaway.bonusEntries2;
+      const roleName = interaction.guild.roles.cache.get(giveaway.bonusRoleId2)?.name || 'Bonus Role';
+      bonusEntryMessages.push(`You received ${giveaway.bonusEntries2} bonus ${giveaway.bonusEntries2 === 1 ? 'entry' : 'entries'} for having the ${roleName} role!`);
+    }
+    
+    // Create the bonus entry message
+    const bonusEntryMessage = bonusEntryMessages.length > 0 ? `\n${bonusEntryMessages.join('\n')}` : '';
     
     // Add user to participants
     giveaway.participants.push(interaction.user.id);
@@ -556,15 +683,20 @@ async function endGiveaway(client, giveawayId) {
       .slice(0, embedDesc.findIndex(line => line.includes('Click the button')) || 0)
       .join('\n');
     
+    const totalEntries = Object.values(giveaway.participantEntries || {}).reduce((sum, entry) => sum + entry, 0);
+    const hostUser = await client.users.fetch(giveaway.hostId).catch(() => null);
+    
     const updatedEmbed = {
       title: `🎊 GIVEAWAY ENDED: ${giveaway.prize}`,
-      description: `${descriptionContent ? `${descriptionContent}\n\n` : ''}**Winners:** ${winnerText}`,
+      description: `${descriptionContent ? `${descriptionContent}\n\n` : ''}**Winners:** ${winnerText}\nEnded: <t:${Math.floor(Date.now() / 1000)}:R>`,
       fields: [
-        { name: 'Total Entries', value: Object.values(giveaway.participantEntries || {}).reduce((sum, entry) => sum + entry, 0).toString(), inline: true }
+        { name: 'Host', value: hostUser ? `<@${hostUser.id}>` : 'Unknown', inline: true },
+        { name: 'Winner Count', value: giveaway.winnerCount.toString(), inline: true },
+        { name: 'Total Entries', value: totalEntries.toString(), inline: true },
       ],
       color: winners.length > 0 ? parseInt(config.successColor.replace('#', ''), 16) : parseInt(config.errorColor.replace('#', ''), 16),
       footer: {
-        text: `ID: ${giveaway.id.substring(giveaway.id.length - 8)} | Ended`
+        text: `ID: ${giveaway.id.substring(giveaway.id.length - 8)} • Ended ${winners.length > 0 ? '• Use /greroll to reroll winners' : ''}`
       },
       timestamp: new Date().toISOString()
     };
@@ -574,19 +706,47 @@ async function endGiveaway(client, giveawayId) {
       components: winners.length > 0 ? [row] : [] 
     });
     
-    // Send a winner announcement
+    // Send a winner announcement with animation
     if (winners.length > 0) {
-      // Prepare winner message with custom text if provided
-      let winnerContent = `Congratulations ${winnerText}! You won **${giveaway.prize}**!\n[Jump to Giveaway](${message.url})`;
+      // Import the animations utility
+      const animations = require('../../utils/animations');
       
+      // Prepare winner message with custom text if provided
+      let extraText = '';
       if (giveaway.winnerMessage) {
-        winnerContent += `\n\n${giveaway.winnerMessage}`;
+        extraText = `\n\n${giveaway.winnerMessage}`;
       }
       
-      await channel.send({
-        content: winnerContent,
+      // Send the initial animation frame
+      const animationMsg = await channel.send({
+        content: animations.createWinnerAnnouncement(giveaway.prize, winnerText, 0) + 
+                `\n[Jump to Giveaway](${message.url})${extraText}`,
         allowedMentions: { users: winners }
       });
+      
+      // Animate the confetti (8 frames, 600ms delay)
+      for (let frame = 1; frame < 8; frame++) {
+        try {
+          // We use a setTimeout inside an IIFE to capture the current frame value
+          ((currentFrame) => {
+            setTimeout(async () => {
+              try {
+                // Update message with new animation frame
+                await animationMsg.edit({
+                  content: animations.createWinnerAnnouncement(giveaway.prize, winnerText, currentFrame) + 
+                          `\n[Jump to Giveaway](${message.url})${extraText}`,
+                  allowedMentions: { users: winners }
+                });
+              } catch (editError) {
+                // Silently fail if we can't edit the message (it might have been deleted)
+                logger.debug(`Error updating animation frame ${currentFrame}: ${editError.message}`);
+              }
+            }, currentFrame * 600); // 600ms between frames
+          })(frame);
+        } catch (animError) {
+          logger.debug(`Animation error: ${animError.message}`);
+        }
+      }
       
       logger.info(`Giveaway ${giveawayId} ended. Winners: ${winners.join(', ')}`);
     } else {

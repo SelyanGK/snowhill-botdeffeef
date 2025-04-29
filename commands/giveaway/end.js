@@ -171,8 +171,8 @@ async function endGiveawayEarly(client, giveawayId) {
   giveaway.ended = true;
   giveaway.endedAt = Date.now();
   
-  // Find winners
-  const winners = pickWinners(giveaway.participants, giveaway.winnerCount);
+  // Find winners, accounting for bonus entries
+  const winners = pickWinners(giveaway.participants, giveaway.winnerCount, giveaway.participantEntries);
   giveaway.winners = winners;
   
   // Save changes
@@ -244,12 +244,13 @@ async function endGiveawayEarly(client, giveawayId) {
 }
 
 /**
- * Picks random winners from an array of participants
+ * Picks random winners from an array of participants, accounting for bonus entries
  * @param {string[]} participants - Array of participant IDs
  * @param {number} winnerCount - Number of winners to pick
+ * @param {Object} entriesMap - Map of user IDs to their entry count
  * @returns {string[]} - Array of winner IDs
  */
-function pickWinners(participants, winnerCount) {
+function pickWinners(participants, winnerCount, entriesMap = {}) {
   // If there are no participants, return empty array
   if (participants.length === 0) {
     return [];
@@ -260,18 +261,41 @@ function pickWinners(participants, winnerCount) {
     return [...participants];
   }
   
-  // Randomly select winners
+  // Create weighted entry pool for bonus entries
+  const entryPool = [];
+  
+  participants.forEach(userId => {
+    // Get number of entries for this user (default to 1)
+    const entryCount = entriesMap[userId] || 1;
+    
+    // Add user to the pool multiple times based on entry count
+    for (let i = 0; i < entryCount; i++) {
+      entryPool.push(userId);
+    }
+  });
+  
+  // Randomly select winners from weighted pool
   const winners = [];
-  const participantsCopy = [...participants];
   
   for (let i = 0; i < winnerCount; i++) {
-    const winnerIndex = Math.floor(Math.random() * participantsCopy.length);
-    const winner = participantsCopy[winnerIndex];
+    if (winners.length >= participants.length) break; // Prevent infinite loop
     
-    winners.push(winner);
+    let attempts = 0;
+    let winnerFound = false;
     
-    // Remove the winner to avoid duplicate winners
-    participantsCopy.splice(winnerIndex, 1);
+    // Try to find a winner up to 100 times (avoid infinite loop)
+    while (!winnerFound && attempts < 100) {
+      const randomIndex = Math.floor(Math.random() * entryPool.length);
+      const potentialWinner = entryPool[randomIndex];
+      
+      // If this user hasn't been selected yet, add them as a winner
+      if (!winners.includes(potentialWinner)) {
+        winners.push(potentialWinner);
+        winnerFound = true;
+      }
+      
+      attempts++;
+    }
   }
   
   return winners;

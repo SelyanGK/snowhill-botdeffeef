@@ -1,7 +1,7 @@
 {
   "enabled": true,
   "noPingRoleId": "1364936227148533761",
-  "bypassRoleId": null,
+  "bypassRoleId": "1364937426392580117",
   "muteDuration": 5,
   "warnMessage": "You have been timed out for pinging a user with the no-ping role.",
   "logChannelId": null
