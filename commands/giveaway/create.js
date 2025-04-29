@@ -76,11 +76,7 @@ module.exports = {
         .setRequired(false)
         .setMinValue(1)
         .setMaxValue(5))
-    .addIntegerOption(option => 
-      option.setName('min_level')
-        .setDescription('Minimum XP level required to enter (if your bot has a leveling system)')
-        .setRequired(false)
-        .setMinValue(1))
+
     .addStringOption(option => 
       option.setName('min_messages')
         .setDescription('Minimum number of messages required in the server')
@@ -118,7 +114,7 @@ module.exports = {
     const bonusEntries2 = interaction.options.getInteger('bonus_entries2') || 1;
     const bonusRole3 = interaction.options.getRole('bonus_role3');
     const bonusEntries3 = interaction.options.getInteger('bonus_entries3') || 1;
-    const minLevel = interaction.options.getInteger('min_level');
+    // Min level requirement has been removed
     const minMessagesStr = interaction.options.getString('min_messages');
     const winnerMessage = interaction.options.getString('winner_message');
     const channel = interaction.options.getChannel('channel') || interaction.channel;
@@ -213,9 +209,7 @@ module.exports = {
         requirements.push(`• <@&${bonusRole3.id}> role receives ${bonusEntries3} bonus ${bonusText}`);
       }
       
-      if (minLevel) {
-        requirements.push(`• Be at least level ${minLevel} in the server`);
-      }
+      // Min level requirement has been removed
       
       if (minMessagesStr) {
         const minMessages = parseInt(minMessagesStr);
@@ -276,7 +270,7 @@ module.exports = {
         bonusEntries2: bonusEntries2,
         bonusRoleId3: bonusRole3 ? bonusRole3.id : null,
         bonusEntries3: bonusEntries3,
-        minLevel: minLevel || 0,
+        // Min level requirement has been removed
         minMessages: minMessages,
         winnerMessage: winnerMessage || null,
         participants: [],
@@ -313,9 +307,7 @@ module.exports = {
         successFields.push({ name: 'Member For', value: `${joinDays} days`, inline: true });
       }
       
-      if (minLevel > 0) {
-        successFields.push({ name: 'Min Level', value: `${minLevel}`, inline: true });
-      }
+      // Min level requirement has been removed
       
       if (minMessages > 0) {
         successFields.push({ name: 'Min Messages', value: `${minMessages}`, inline: true });
@@ -485,25 +477,7 @@ module.exports = {
       });
     }
     
-    // Check minimum level requirement if set
-    if (giveaway.minLevel && giveaway.minLevel > 0) {
-      // This is a placeholder for where you'd check user level against a database
-      // Since we don't have a leveling system implemented, we'll just log it for now
-      // In a real implementation, you would query your database for the user's level
-      
-      logger.debug(`Minimum level check for user ${interaction.user.tag} - Required: ${giveaway.minLevel}`);
-      
-      // Uncomment this when you have a real level system:
-      /*
-      const userLevel = await getLevelFromDatabase(interaction.user.id);
-      if (userLevel < giveaway.minLevel) {
-        return interaction.reply({
-          content: `You need to be at least level ${giveaway.minLevel} to enter this giveaway. You are currently level ${userLevel}.`,
-          ephemeral: true
-        });
-      }
-      */
-    }
+    // Min level requirement has been removed
     
     // Check minimum messages requirement if set
     if (giveaway.minMessages && giveaway.minMessages > 0) {
