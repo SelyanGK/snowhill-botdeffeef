@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const config = require('../../config.json');
+const EmbedCreator = require('../../utils/embedCreator');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -55,33 +56,39 @@ module.exports = {
     // Get role count (excluding @everyone)
     const roleCount = guild.roles.cache.size - 1;
     
-    // Create the embed
-    await interaction.reply({
-      embeds: [{
-        title: `📊 ${guild.name} Server Information`,
-        description: guild.description || 'No description set',
-        color: parseInt(config.embedColor.replace('#', ''), 16),
-        thumbnail: {
-          url: guild.iconURL({ dynamic: true, size: 1024 }) || 'https://cdn.discordapp.com/attachments/REPLACE_THIS_WITH_YOUR_CHANNEL_ID/default_guild_icon.png'
-        },
-        fields: [
-          { name: 'ID', value: guild.id, inline: true },
-          { name: 'Owner', value: `<@${guild.ownerId}>`, inline: true },
-          { name: 'Created', value: `<t:${creationDate}:R> (<t:${creationDate}:D>)`, inline: true },
-          { name: 'Verification Level', value: verificationLevel, inline: true },
-          { name: 'Boost Level', value: premiumTier, inline: true },
-          { name: 'Boost Count', value: guild.premiumSubscriptionCount.toString(), inline: true },
-          { name: 'Members', value: `👥 ${memberCount} humans\n🤖 ${botCount} bots\n👥 ${guild.memberCount} total`, inline: true },
-          { name: 'Channels', value: `💬 ${textChannels} text\n🔊 ${voiceChannels} voice\n📁 ${categoryChannels} categories\n🗨️ ${forumChannels} forums\n📝 ${textChannels + voiceChannels + categoryChannels + forumChannels} total`, inline: true },
-          { name: 'Roles', value: `👑 ${roleCount}`, inline: true },
-          { name: 'Features', value: guild.features.length ? guild.features.map(f => `• ${f.split('_').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ')}`).join('\n') : 'None', inline: false }
-        ],
-        footer: {
-          text: `Requested by ${interaction.user.tag}`,
-          icon_url: interaction.user.displayAvatarURL({ dynamic: true })
-        },
-        timestamp: new Date().toISOString()
-      }]
+    // Create fields for the embed
+    const fields = [
+      { name: 'ID', value: guild.id, inline: true },
+      { name: 'Owner', value: `<@${guild.ownerId}>`, inline: true },
+      { name: 'Created', value: `<t:${creationDate}:R> (<t:${creationDate}:D>)`, inline: true },
+      { name: 'Verification Level', value: verificationLevel, inline: true },
+      { name: 'Boost Level', value: premiumTier, inline: true },
+      { name: 'Boost Count', value: guild.premiumSubscriptionCount.toString(), inline: true },
+      { name: 'Members', value: `👥 ${memberCount} humans\n🤖 ${botCount} bots\n👥 ${guild.memberCount} total`, inline: true },
+      { name: 'Channels', value: `💬 ${textChannels} text\n🔊 ${voiceChannels} voice\n📁 ${categoryChannels} categories\n🗨️ ${forumChannels} forums\n📝 ${textChannels + voiceChannels + categoryChannels + forumChannels} total`, inline: true },
+      { name: 'Roles', value: `👑 ${roleCount}`, inline: true }
+    ];
+    
+    // Add features if any exist
+    if (guild.features.length) {
+      fields.push({
+        name: 'Features', 
+        value: guild.features.map(f => `• ${f.split('_').map(w => w.charAt(0) + w.slice(1).toLowerCase()).join(' ')}`).join('\n'),
+        inline: false
+      });
+    }
+    
+    // Create the server info embed using our utility
+    const serverEmbed = EmbedCreator.create({
+      title: `📊 ${guild.name} Server Information`,
+      description: guild.description || 'No description set',
+      color: config.embedColor,
+      thumbnail: guild.iconURL({ dynamic: true, size: 1024 }),
+      fields: fields,
+      footer: `Requested by ${interaction.user.tag}`
     });
+    
+    // Send the embed
+    await interaction.reply({ embeds: [serverEmbed] });
   },
 };

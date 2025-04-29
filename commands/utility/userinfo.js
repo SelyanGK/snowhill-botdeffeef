@@ -1,5 +1,6 @@
 const { SlashCommandBuilder } = require('discord.js');
 const config = require('../../config.json');
+const EmbedCreator = require('../../utils/embedCreator');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -66,32 +67,45 @@ module.exports = {
       if (act.details) activity += ` - ${act.details}`;
     }
     
-    // Create the embed
-    await interaction.reply({
-      embeds: [{
-        title: `${statusEmoji} ${target.tag} (${target.id})`,
-        description: member ? `<@${target.id}>` : 'Not a member of this server',
-        color: member ? member.displayHexColor === '#000000' ? parseInt(config.embedColor.replace('#', ''), 16) : parseInt(member.displayHexColor.replace('#', ''), 16) : parseInt(config.embedColor.replace('#', ''), 16),
-        thumbnail: {
-          url: target.displayAvatarURL({ dynamic: true, size: 1024 })
-        },
-        fields: [
-          { name: 'Account Created', value: `<t:${creationDate}:R> (<t:${creationDate}:D>)`, inline: true },
-          ...(joinDate ? [{ name: 'Joined Server', value: `<t:${joinDate}:R> (<t:${joinDate}:D>)`, inline: true }] : []),
-          ...(member ? [{ name: 'Nickname', value: member.nickname || 'None', inline: true }] : []),
-          ...(member ? [{ name: 'Status', value: presenceStatus, inline: true }] : []),
-          ...(member ? [{ name: 'Activity', value: activity, inline: true }] : []),
-          ...(member ? [{ name: 'Highest Role', value: member.roles.highest.id === interaction.guild.id ? 'None' : `<@&${member.roles.highest.id}>`, inline: true }] : []),
-          ...(member ? [{ name: `Roles [${member.roles.cache.size - 1}]`, value: roles, inline: false }] : []),
-          { name: 'Bot', value: target.bot ? 'Yes' : 'No', inline: true },
-          ...(member ? [{ name: 'Booster', value: member.premiumSince ? `Yes, since <t:${Math.floor(member.premiumSinceTimestamp / 1000)}:R>` : 'No', inline: true }] : [])
-        ],
-        footer: {
-          text: `Requested by ${interaction.user.tag}`,
-          icon_url: interaction.user.displayAvatarURL({ dynamic: true })
-        },
-        timestamp: new Date().toISOString()
-      }]
+    // Prepare fields for the embed
+    const fields = [
+      { name: 'Account Created', value: `<t:${creationDate}:R> (<t:${creationDate}:D>)`, inline: true }
+    ];
+    
+    // Add member-specific fields if they are in the server
+    if (joinDate) fields.push({ name: 'Joined Server', value: `<t:${joinDate}:R> (<t:${joinDate}:D>)`, inline: true });
+    if (member) {
+      fields.push({ name: 'Nickname', value: member.nickname || 'None', inline: true });
+      fields.push({ name: 'Status', value: presenceStatus, inline: true });
+      fields.push({ name: 'Activity', value: activity, inline: true });
+      fields.push({ name: 'Highest Role', value: member.roles.highest.id === interaction.guild.id ? 'None' : `<@&${member.roles.highest.id}>`, inline: true });
+      fields.push({ name: `Roles [${member.roles.cache.size - 1}]`, value: roles, inline: false });
+    }
+    
+    fields.push({ name: 'Bot', value: target.bot ? 'Yes' : 'No', inline: true });
+    
+    if (member && member.premiumSince) {
+      fields.push({ name: 'Booster', value: `Yes, since <t:${Math.floor(member.premiumSinceTimestamp / 1000)}:R>`, inline: true });
+    } else if (member) {
+      fields.push({ name: 'Booster', value: 'No', inline: true });
+    }
+    
+    // Determine color to use
+    const color = member ? 
+      (member.displayHexColor === '#000000' ? config.embedColor : member.displayHexColor) : 
+      config.embedColor;
+    
+    // Create the embed using our utility
+    const userEmbed = EmbedCreator.create({
+      title: `${statusEmoji} ${target.tag} (${target.id})`,
+      description: member ? `<@${target.id}>` : 'Not a member of this server',
+      color: color,
+      thumbnail: target.displayAvatarURL({ dynamic: true, size: 1024 }),
+      fields: fields,
+      footer: `Requested by ${interaction.user.tag}`
     });
+    
+    // Send the embed
+    await interaction.reply({ embeds: [userEmbed] });
   },
 };

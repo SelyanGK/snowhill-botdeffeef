@@ -48,7 +48,14 @@ module.exports = {
       
       // Execute command
       try {
-        logger.info(`User ${interaction.user.tag} (${interaction.user.id}) used command /${interaction.commandName}`);
+        // Log more details for subcommands
+        if (interaction.options && interaction.options.getSubcommand(false)) {
+          const subcommandName = interaction.options.getSubcommand(false);
+          logger.info(`User ${interaction.user.tag} (${interaction.user.id}) used command /${interaction.commandName} ${subcommandName}`);
+        } else {
+          logger.info(`User ${interaction.user.tag} (${interaction.user.id}) used command /${interaction.commandName}`);
+        }
+        
         await command.execute(interaction, client);
       } catch (error) {
         logger.error(`Error executing command ${interaction.commandName}: ${error.message}`);

@@ -3,7 +3,7 @@ const config = require('./config.json');
 const logger = require('./utils/logger');
 
 // Hard-coded Discord token (same as in index.js)
-const token = "MTM2MjM2MDg4NTAzNjk3ODIxNg.Gj2YPw.zCvhiJgUPcB-S9RAgm76dw6qfO0OKpMucmPQ-4";
+const token = "MTM2NDY4NDc0MDcxNTg3MjMxNw.Gj-SGf.PdBQ8-tA24yiGsxzwdVDiCJx3qvgQ6uKqoe18M";
 
 // Construct and prepare an instance of the REST module
 const rest = new REST().setToken(token);

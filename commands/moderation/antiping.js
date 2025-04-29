@@ -1,6 +1,7 @@
-const { SlashCommandBuilder, PermissionFlagsBits, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const Database = require('../../utils/database');
 const logger = require('../../utils/logger');
+const EmbedCreator = require('../../utils/embedCreator');
 
 // Anti-ping database
 const antipingDb = new Database('antiping.json');
@@ -19,7 +20,7 @@ module.exports = {
         .setDescription('Disable the anti-ping system'))
     .addSubcommand(subcommand =>
       subcommand
-        .setName('addprotectedrole')
+        .setName('addrole')
         .setDescription('Add a role that cannot be pinged')
         .addRoleOption(option =>
           option.setName('role')
@@ -72,7 +73,38 @@ module.exports = {
    * @param {Interaction} interaction - The interaction
    */
   async execute(interaction) {
-    const subcommand = interaction.options.getSubcommand();
+    let subcommand;
+    try {
+      subcommand = interaction.options.getSubcommand();
+      logger.info(`Executing antiping subcommand: ${subcommand}`);
+    } catch (error) {
+      logger.error(`Error getting subcommand: ${error.message}`);
+      
+      // Send a helpful error message with available commands
+      const errorEmbed = EmbedCreator.error(
+        'Missing Subcommand',
+        'Please specify one of the available anti-ping subcommands:'
+      );
+      
+      errorEmbed.addFields({ 
+        name: 'Available Subcommands', 
+        value: 
+          '• `/antiping view` - View current configuration\n' +
+          '• `/antiping enable` - Enable the anti-ping system\n' +
+          '• `/antiping disable` - Disable the anti-ping system\n' +
+          '• `/antiping addrole` - Set a role that cannot be pinged\n' +
+          '• `/antiping addbypassrole` - Set a role that can ping protected roles\n' +
+          '• `/antiping muteduration` - Set the timeout duration\n' +
+          '• `/antiping message` - Set the warning message\n' +
+          '• `/antiping log` - Set the log channel'
+      });
+      
+      return await interaction.reply({
+        embeds: [errorEmbed],
+        ephemeral: true
+      });
+    }
+    
     const config = antipingDb.read();
 
     switch (subcommand) {
@@ -80,8 +112,13 @@ module.exports = {
         config.enabled = true;
         antipingDb.write(config);
         
+        const enableEmbed = EmbedCreator.success(
+          'Anti-Ping System Enabled',
+          'The anti-ping protection system has been successfully enabled.'
+        );
+        
         await interaction.reply({
-          content: `Anti-ping protection system has been **enabled**.`,
+          embeds: [enableEmbed],
           ephemeral: true
         });
         
@@ -92,21 +129,31 @@ module.exports = {
         config.enabled = false;
         antipingDb.write(config);
         
+        const disableEmbed = EmbedCreator.warning(
+          'Anti-Ping System Disabled',
+          'The anti-ping protection system has been disabled. Protected users are no longer protected from pings.'
+        );
+        
         await interaction.reply({
-          content: `Anti-ping protection system has been **disabled**.`,
+          embeds: [disableEmbed],
           ephemeral: true
         });
         
         logger.info(`Anti-ping system disabled by ${interaction.user.tag}`);
         break;
         
-      case 'addprotectedrole':
+      case 'addrole': // This is the officially registered command name
         const protectedRole = interaction.options.getRole('role');
         config.noPingRoleId = protectedRole.id;
         antipingDb.write(config);
         
+        const protectedRoleEmbed = EmbedCreator.info(
+          'Protected Role Set',
+          `Set protected role to **${protectedRole.name}**.\nMembers with this role cannot be pinged unless by users with bypass role.`
+        );
+        
         await interaction.reply({
-          content: `Set protected role to **${protectedRole.name}**. Members with this role cannot be pinged unless by users with bypass role.`,
+          embeds: [protectedRoleEmbed],
           ephemeral: true
         });
         
@@ -118,8 +165,13 @@ module.exports = {
         config.bypassRoleId = bypassRole.id;
         antipingDb.write(config);
         
+        const bypassRoleEmbed = EmbedCreator.info(
+          'Bypass Role Set',
+          `Set bypass role to **${bypassRole.name}**.\nMembers with this role can ping protected roles.`
+        );
+        
         await interaction.reply({
-          content: `Set bypass role to **${bypassRole.name}**. Members with this role can ping protected roles.`,
+          embeds: [bypassRoleEmbed],
           ephemeral: true
         });
         
@@ -131,8 +183,24 @@ module.exports = {
         config.muteDuration = minutes;
         antipingDb.write(config);
         
+        // Format duration for better readability
+        let durationText = `${minutes} minute${minutes !== 1 ? 's' : ''}`;
+        if (minutes >= 60) {
+          const hours = Math.floor(minutes / 60);
+          const remainingMinutes = minutes % 60;
+          durationText = `${hours} hour${hours !== 1 ? 's' : ''}`;
+          if (remainingMinutes > 0) {
+            durationText += ` and ${remainingMinutes} minute${remainingMinutes !== 1 ? 's' : ''}`;
+          }
+        }
+        
+        const durationEmbed = EmbedCreator.info(
+          'Timeout Duration Updated',
+          `Set timeout duration to **${durationText}** for anti-ping violations.`
+        );
+        
         await interaction.reply({
-          content: `Set timeout duration to **${minutes} minutes** for anti-ping violations.`,
+          embeds: [durationEmbed],
           ephemeral: true
         });
         
@@ -144,8 +212,15 @@ module.exports = {
         config.warnMessage = message;
         antipingDb.write(config);
         
+        const messageEmbed = EmbedCreator.info(
+          'Warning Message Updated',
+          'The warning message has been updated.'
+        );
+        
+        messageEmbed.addFields({ name: 'New Message', value: message });
+        
         await interaction.reply({
-          content: `Set warning message to: "${message}"`,
+          embeds: [messageEmbed],
           ephemeral: true
         });
         
@@ -158,7 +233,10 @@ module.exports = {
         // Check if channel is a text channel
         if (channel.type !== 0) {
           return interaction.reply({
-            content: 'You can only set text channels as log channels.',
+            embeds: [EmbedCreator.error(
+              'Invalid Channel Type',
+              'You can only set text channels as log channels.'
+            )],
             ephemeral: true
           });
         }
@@ -166,8 +244,13 @@ module.exports = {
         config.logChannelId = channel.id;
         antipingDb.write(config);
         
+        const logEmbed = EmbedCreator.info(
+          'Log Channel Set',
+          `Anti-ping violations will now be logged in ${channel}.`
+        );
+        
         await interaction.reply({
-          content: `Anti-ping violations will now be logged in ${channel}.`,
+          embeds: [logEmbed],
           ephemeral: true
         });
         
@@ -187,30 +270,56 @@ module.exports = {
           ? interaction.guild.channels.cache.get(config.logChannelId)?.toString() || 'Unknown Channel'
           : 'Not set';
         
-        const embed = new EmbedBuilder()
-          .setTitle('🛡️ Anti-Ping Protection System')
-          .setDescription(`The anti-ping system ${config.enabled ? 'is **enabled**' : 'is currently **disabled**'}`)
-          .addFields([
-            { name: 'Status', value: config.enabled ? '✅ Enabled' : '❌ Disabled', inline: true },
-            { name: 'Protected Role', value: nopingRoleName, inline: true },
-            { name: 'Bypass Role', value: bypassRoleName, inline: true },
-            { name: 'Timeout Duration', value: `${config.muteDuration} minutes`, inline: true },
-            { name: 'Log Channel', value: logChannelName, inline: true },
-            { name: 'Warning Message', value: config.warnMessage || 'Not set' }
-          ])
-          .setColor(config.enabled ? 0x00FF00 : 0xFF0000)
-          .setFooter({ text: 'Use /antiping commands to configure the system' })
-          .setTimestamp();
+        // Create fields for the embed
+        const fields = [
+          { name: 'Status', value: config.enabled ? '✅ Enabled' : '❌ Disabled', inline: true },
+          { name: 'Protected Role', value: nopingRoleName, inline: true },
+          { name: 'Bypass Role', value: bypassRoleName, inline: true },
+          { name: 'Timeout Duration', value: `${config.muteDuration} minutes`, inline: true },
+          { name: 'Log Channel', value: logChannelName, inline: true },
+          { name: 'Warning Message', value: config.warnMessage || 'Not set' }
+        ];
+        
+        // Create the embed using our utility
+        const statusEmbed = EmbedCreator.create({
+          title: '🛡️ Anti-Ping Protection System',
+          description: `The anti-ping system ${config.enabled ? 'is **enabled**' : 'is currently **disabled**'}`,
+          color: config.enabled ? '#00FF00' : '#FF0000',
+          fields: fields,
+          footer: 'Use /antiping commands to configure the system'
+        });
         
         await interaction.reply({
-          embeds: [embed],
+          embeds: [statusEmbed],
           ephemeral: true
         });
         break;
         
       default:
+        // Log this case to help diagnose the issue
+        logger.error(`Unknown antiping subcommand received: "${subcommand}" from user ${interaction.user.tag}`);
+        
+        // Send a helpful error message with available commands
+        const errorEmbed = EmbedCreator.error(
+          'Unknown Subcommand',
+          'Please use one of the available anti-ping commands:'
+        );
+        
+        errorEmbed.addFields({ 
+          name: 'Available Subcommands', 
+          value: 
+            '• `/antiping view` - View current configuration\n' +
+            '• `/antiping enable` - Enable the anti-ping system\n' +
+            '• `/antiping disable` - Disable the anti-ping system\n' +
+            '• `/antiping addrole` - Set a role that cannot be pinged\n' +
+            '• `/antiping addbypassrole` - Set a role that can ping protected roles\n' +
+            '• `/antiping muteduration` - Set the timeout duration\n' +
+            '• `/antiping message` - Set the warning message\n' +
+            '• `/antiping log` - Set the log channel'
+        });
+        
         await interaction.reply({
-          content: 'Unknown subcommand. Please use one of the available anti-ping commands.',
+          embeds: [errorEmbed],
           ephemeral: true
         });
     }
