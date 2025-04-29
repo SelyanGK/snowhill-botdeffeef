@@ -25,9 +25,8 @@ for (const folder of commandFolders) {
   }
 }
 
-// Hard-coded Discord token
-// This is not the recommended approach for production, but works for this example
-const token = "MTM2NDY4NDc0MDcxNTg3MjMxNw.Gj-SGf.PdBQ8-tA24yiGsxzwdVDiCJx3qvgQ6uKqoe18M";
+// Use environment token for security
+const token = process.env.DISCORD_TOKEN;
 
 // Construct and prepare an instance of the REST module
 const rest = new REST().setToken(token);
