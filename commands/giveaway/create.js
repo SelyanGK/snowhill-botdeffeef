@@ -66,6 +66,16 @@ module.exports = {
         .setRequired(false)
         .setMinValue(1)
         .setMaxValue(5))
+    .addRoleOption(option => 
+      option.setName('bonus_role3')
+        .setDescription('Third role that receives bonus entries')
+        .setRequired(false))
+    .addIntegerOption(option => 
+      option.setName('bonus_entries3')
+        .setDescription('Number of bonus entries for third bonus role (1-5)')
+        .setRequired(false)
+        .setMinValue(1)
+        .setMaxValue(5))
     .addIntegerOption(option => 
       option.setName('min_level')
         .setDescription('Minimum XP level required to enter (if your bot has a leveling system)')
@@ -106,6 +116,8 @@ module.exports = {
     const bonusEntries = interaction.options.getInteger('bonus_entries') || 1;
     const bonusRole2 = interaction.options.getRole('bonus_role2');
     const bonusEntries2 = interaction.options.getInteger('bonus_entries2') || 1;
+    const bonusRole3 = interaction.options.getRole('bonus_role3');
+    const bonusEntries3 = interaction.options.getInteger('bonus_entries3') || 1;
     const minLevel = interaction.options.getInteger('min_level');
     const minMessagesStr = interaction.options.getString('min_messages');
     const winnerMessage = interaction.options.getString('winner_message');
@@ -196,6 +208,11 @@ module.exports = {
         requirements.push(`• <@&${bonusRole2.id}> role receives ${bonusEntries2} bonus ${bonusText}`);
       }
       
+      if (bonusRole3) {
+        const bonusText = bonusEntries3 === 1 ? 'entry' : 'entries';
+        requirements.push(`• <@&${bonusRole3.id}> role receives ${bonusEntries3} bonus ${bonusText}`);
+      }
+      
       if (minLevel) {
         requirements.push(`• Be at least level ${minLevel} in the server`);
       }
@@ -257,6 +274,8 @@ module.exports = {
         bonusEntries: bonusEntries,
         bonusRoleId2: bonusRole2 ? bonusRole2.id : null,
         bonusEntries2: bonusEntries2,
+        bonusRoleId3: bonusRole3 ? bonusRole3.id : null,
+        bonusEntries3: bonusEntries3,
         minLevel: minLevel || 0,
         minMessages: minMessages,
         winnerMessage: winnerMessage || null,
@@ -308,6 +327,10 @@ module.exports = {
       
       if (bonusRole2) {
         successFields.push({ name: 'Bonus Role 2', value: `${bonusRole2.name} (+${bonusEntries2})`, inline: true });
+      }
+      
+      if (bonusRole3) {
+        successFields.push({ name: 'Bonus Role 3', value: `${bonusRole3.name} (+${bonusEntries3})`, inline: true });
       }
       
       // Import animations utility for a more festive message
@@ -517,6 +540,13 @@ module.exports = {
       entries += giveaway.bonusEntries2;
       const roleName = interaction.guild.roles.cache.get(giveaway.bonusRoleId2)?.name || 'Bonus Role';
       bonusEntryMessages.push(`You received ${giveaway.bonusEntries2} bonus ${giveaway.bonusEntries2 === 1 ? 'entry' : 'entries'} for having the ${roleName} role!`);
+    }
+    
+    // Check if the user has the third bonus role (if configured)
+    if (giveaway.bonusRoleId3 && member.roles.cache.has(giveaway.bonusRoleId3)) {
+      entries += giveaway.bonusEntries3;
+      const roleName = interaction.guild.roles.cache.get(giveaway.bonusRoleId3)?.name || 'Bonus Role';
+      bonusEntryMessages.push(`You received ${giveaway.bonusEntries3} bonus ${giveaway.bonusEntries3 === 1 ? 'entry' : 'entries'} for having the ${roleName} role!`);
     }
     
     // Create the bonus entry message
