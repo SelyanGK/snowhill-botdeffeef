@@ -12,7 +12,6 @@ const afkDb = new Database('afk.json');
 // Import commands that need to hook into message events
 const afkCommand = require('../commands/utility/afk');
 const snipeCommand = require('../commands/utility/snipe');
-const levelCommand = require('../commands/misc/level');
 const autoreplyCommand = require('../commands/utility/autoreply');
 const scrambleCommand = require('../commands/fun/scramble');
 
@@ -32,9 +31,6 @@ module.exports = {
     
     // Check for AFK status
     await afkCommand.checkAFK(message);
-    
-    // Handle XP for leveling system
-    levelCommand.handleMessageXp(message);
     
     // Check for auto-reply triggers
     await autoreplyCommand.checkMessage(message);
