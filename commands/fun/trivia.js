@@ -152,7 +152,7 @@ module.exports = {
           { name: 'History', value: 'history' }
         )),
   
-  cooldown: 5,
+  cooldown: 60,
   
   /**
    * Executes the trivia command

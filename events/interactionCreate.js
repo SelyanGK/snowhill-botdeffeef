@@ -1,6 +1,7 @@
 const { Collection, InteractionType } = require('discord.js');
 const logger = require('../utils/logger');
 const config = require('../config.json');
+const communityMood = require('../utils/communityMood');
 
 module.exports = {
   name: 'interactionCreate',
@@ -35,11 +36,23 @@ module.exports = {
         const expirationTime = timestamps.get(interaction.user.id) + cooldownAmount;
         
         if (now < expirationTime) {
-          const timeLeft = (expirationTime - now) / 1000;
-          return interaction.reply({
-            content: `Please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.data.name}\` command.`,
-            ephemeral: true
-          });
+          // Check if user has MANAGE_MESSAGES permission to bypass cooldown
+          const hasManageMessagesPermission = interaction.member && 
+            interaction.member.permissions && 
+            interaction.member.permissions.has('ManageMessages');
+          
+          // If user doesn't have the bypass permission, enforce cooldown
+          if (!hasManageMessagesPermission) {
+            const timeLeft = (expirationTime - now) / 1000;
+            return interaction.reply({
+              content: `Please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.data.name}\` command.`,
+              ephemeral: true
+            });
+          }
+          // If user has the permission, log the bypass
+          else {
+            logger.info(`User ${interaction.user.tag} bypassed cooldown for /${command.data.name} using ManageMessages permission`);
+          }
         }
       }
       
@@ -58,17 +71,39 @@ module.exports = {
         
         await command.execute(interaction, client);
       } catch (error) {
+        // Log detailed error with stack trace for debugging
         logger.error(`Error executing command ${interaction.commandName}: ${error.message}`);
+        logger.error(`Stack trace: ${error.stack}`);
+        
+        // Prepare a user-friendly error message
+        let errorMessage = 'There was an error while executing this command!';
+        
+        // For specific errors we can provide more details
+        if (error.message.includes('permissions') || error.message.includes('Permissions')) {
+          errorMessage = 'I don\'t have the necessary permissions to execute this command. Please check my role permissions.';
+        } else if (error.message.includes('Missing Access') || error.message.includes('Missing Permissions')) {
+          errorMessage = 'I don\'t have access to perform this action. Please check channel and role permissions.';
+        } else if (error.message.includes('Unknown')) {
+          errorMessage = 'Sorry, something unexpected happened. The command failed to execute properly.';
+        }
         
         const errorResponse = {
-          content: 'There was an error while executing this command!',
+          content: errorMessage,
           ephemeral: true
         };
         
-        if (interaction.replied || interaction.deferred) {
-          await interaction.followUp(errorResponse);
-        } else {
-          await interaction.reply(errorResponse);
+        // Safely respond to the interaction based on its current state
+        try {
+          if (interaction.replied) {
+            await interaction.followUp(errorResponse);
+          } else if (interaction.deferred) {
+            await interaction.editReply(errorResponse);
+          } else {
+            await interaction.reply(errorResponse);
+          }
+        } catch (responseError) {
+          // If we can't respond, log it but don't crash
+          logger.error(`Failed to send error response: ${responseError.message}`);
         }
       }
     }
@@ -155,11 +190,29 @@ module.exports = {
           }
         }
       } catch (error) {
+        // Log detailed error with stack trace for debugging
         logger.error(`Error handling button interaction: ${error.message}`);
-        await interaction.reply({ 
-          content: 'There was an error while processing this button!', 
+        logger.error(`Stack trace: ${error.stack}`);
+        
+        // Create user-friendly error message
+        const errorResponse = { 
+          content: 'There was an error while processing this button interaction!', 
           ephemeral: true 
-        });
+        };
+        
+        // Safely respond to the interaction based on its current state
+        try {
+          if (interaction.replied) {
+            await interaction.followUp(errorResponse);
+          } else if (interaction.deferred) {
+            await interaction.editReply(errorResponse);
+          } else {
+            await interaction.reply(errorResponse);
+          }
+        } catch (responseError) {
+          // If we can't respond, log it but don't crash
+          logger.error(`Failed to send button error response: ${responseError.message}`);
+        }
       }
     }
     // Handle select menu interactions

@@ -51,7 +51,7 @@ module.exports = {
       const embed = new EmbedBuilder()
         .setAuthor({
           name: deletedMessage.author.tag,
-          iconURL: deletedMessage.author.avatarURL({ dynamic: true })
+          iconURL: deletedMessage.author.avatarURL
         })
         .setDescription(deletedMessage.content || '*No content*')
         .setColor(config.embedColor)

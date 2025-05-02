@@ -1,0 +1,603 @@
+[2025-04-28T20:25:38.861Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:25:38.865Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:25:38.865Z] [INFO] Loaded event: ready
+[2025-04-28T20:25:38.866Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:25:38.867Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:25:38.869Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:25:38.869Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:25:38.871Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:25:38.872Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:25:38.870Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:25:38.873Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:25:38.874Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:25:38.876Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:25:38.877Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:25:38.875Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:25:38.886Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:25:38.887Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:25:38.888Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:25:38.889Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:25:40.244Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:25:40.248Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:25:40.248Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:25:40.249Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:25:40.250Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:25:40.250Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:25:40.251Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:25:40.252Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:25:40.253Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:25:40.253Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:25:40.254Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:25:40.255Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:25:40.257Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:25:40.258Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:25:40.258Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:25:40.259Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:25:40.260Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:25:40.247Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:25:40.247Z] [INFO] Loaded event: ready
+[2025-04-28T20:27:51.440Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:27:51.442Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:27:51.443Z] [INFO] Loaded event: ready
+[2025-04-28T20:27:51.445Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:27:51.445Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:27:51.446Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:27:51.447Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:27:51.447Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:27:51.448Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:27:51.449Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:27:51.451Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:27:51.443Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:27:51.452Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:27:51.453Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:27:51.453Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:27:51.453Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:27:51.454Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:27:51.454Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:27:51.444Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:27:53.094Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:27:53.096Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:27:53.097Z] [INFO] Loaded event: ready
+[2025-04-28T20:27:53.098Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:27:53.099Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:27:53.098Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:27:53.100Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:27:53.100Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:27:53.101Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:27:53.102Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:27:53.103Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:27:53.104Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:27:53.105Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:27:53.106Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:27:53.106Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:27:53.106Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:27:53.109Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:27:53.110Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:27:53.110Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:28:17.456Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:28:17.458Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:28:17.459Z] [INFO] Loaded event: ready
+[2025-04-28T20:28:17.460Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:28:17.460Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:28:17.462Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:28:17.462Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:28:17.463Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:28:17.463Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:28:17.464Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:28:17.466Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:28:17.467Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:28:17.468Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:28:17.469Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:28:17.470Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:28:17.470Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:28:17.471Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:28:17.472Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:28:17.472Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:28:59.822Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:28:59.825Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:28:59.825Z] [INFO] Loaded event: ready
+[2025-04-28T20:28:59.826Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:28:59.826Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:28:59.828Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:28:59.828Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:28:59.829Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:28:59.829Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:28:59.830Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:28:59.831Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:28:59.832Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:28:59.832Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:28:59.834Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:28:59.835Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:28:59.835Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:28:59.835Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:28:59.836Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:28:59.837Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:28:59.836Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:29:00.876Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:29:00.878Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:29:00.878Z] [INFO] Loaded event: ready
+[2025-04-28T20:29:00.879Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:29:00.879Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:29:00.880Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:29:00.881Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:29:00.881Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:29:00.882Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:29:00.883Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:29:00.883Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:29:00.884Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:29:00.884Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:29:00.886Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:29:00.887Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:29:00.887Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:29:00.887Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:29:00.888Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:29:00.888Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:29:00.888Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:30:03.160Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:30:03.164Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:30:03.164Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:30:03.165Z] [INFO] Loaded event: ready
+[2025-04-28T20:30:03.165Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:30:03.166Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:30:03.168Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:30:03.168Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:30:03.169Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:30:03.170Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:30:03.171Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:30:03.173Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:30:03.174Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:30:03.177Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:30:03.178Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:30:03.178Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:30:03.178Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:30:03.179Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:30:03.179Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:30:03.180Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:30:03.180Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:30:04.060Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:30:04.061Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:30:04.061Z] [INFO] Loaded event: ready
+[2025-04-28T20:30:04.062Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:30:04.066Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:30:04.067Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:30:04.068Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:30:04.069Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:30:04.069Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:30:04.070Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:30:04.072Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:30:04.072Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:30:04.073Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:30:04.075Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:30:04.075Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:30:04.076Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:30:04.078Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:30:04.078Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:30:04.079Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:30:04.079Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:30:04.057Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:33:19.630Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:33:19.632Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:33:19.633Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:33:19.633Z] [INFO] Loaded event: ready
+[2025-04-28T20:33:19.634Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:33:19.634Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:33:19.636Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:33:19.636Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:33:19.636Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:33:19.637Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:33:19.638Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:33:19.639Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:33:19.640Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:33:19.641Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:33:19.643Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:33:19.644Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:33:19.644Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:33:19.645Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:33:19.645Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:33:19.646Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:33:19.646Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:33:20.246Z] [INFO] Bot logged in successfully
+[2025-04-28T20:33:20.247Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:33:20.247Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:33:20.250Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:33:20.250Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:33:20.250Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:33:20.743Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:33:20.746Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:33:20.746Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:33:20.747Z] [INFO] Loaded event: ready
+[2025-04-28T20:33:20.747Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:33:20.748Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:33:20.749Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:33:20.749Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:33:20.750Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:33:20.750Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:33:20.751Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:33:20.752Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:33:20.753Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:33:20.753Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:33:20.756Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:33:20.756Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:33:20.757Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:33:20.757Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:33:20.758Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:33:20.758Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:33:20.759Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:33:21.382Z] [INFO] Bot logged in successfully
+[2025-04-28T20:33:21.383Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:33:21.383Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:33:21.385Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:33:21.386Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:33:21.386Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:33:36.685Z] [WARN] No command matching help was found.
+[2025-04-28T20:33:36.689Z] [WARN] No command matching help was found.
+[2025-04-28T20:33:50.796Z] [WARN] No command matching birthdays was found.
+[2025-04-28T20:33:50.798Z] [WARN] No command matching birthdays was found.
+[2025-04-28T20:34:52.518Z] [INFO] Added command: 8ball from fun
+[2025-04-28T20:34:52.524Z] [INFO] Added command: coinflip from fun
+[2025-04-28T20:34:52.526Z] [INFO] Added command: joke from fun
+[2025-04-28T20:34:52.530Z] [INFO] Added command: giveaway from giveaway
+[2025-04-28T20:34:52.531Z] [INFO] Added command: gend from giveaway
+[2025-04-28T20:34:52.532Z] [INFO] Added command: glist from giveaway
+[2025-04-28T20:34:52.534Z] [INFO] Added command: greroll from giveaway
+[2025-04-28T20:34:52.536Z] [INFO] Added command: ban from moderation
+[2025-04-28T20:34:52.537Z] [INFO] Added command: kick from moderation
+[2025-04-28T20:34:52.538Z] [INFO] Added command: purge from moderation
+[2025-04-28T20:34:52.543Z] [INFO] Added command: timeout from moderation
+[2025-04-28T20:34:52.544Z] [INFO] Added command: unsticky from sticky
+[2025-04-28T20:34:52.546Z] [INFO] Added command: sticky from sticky
+[2025-04-28T20:34:52.547Z] [INFO] Added command: ping from utility
+[2025-04-28T20:34:52.548Z] [INFO] Added command: serverinfo from utility
+[2025-04-28T20:34:52.549Z] [INFO] Added command: userinfo from utility
+[2025-04-28T20:34:52.550Z] [INFO] Started refreshing 16 application (/) commands.
+[2025-04-28T20:34:52.939Z] [INFO] Successfully reloaded 16 guild (/) commands.
+[2025-04-28T20:35:22.496Z] [WARN] No command matching help was found.
+[2025-04-28T20:35:22.501Z] [WARN] No command matching help was found.
+[2025-04-28T20:37:32.967Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:37:32.973Z] [INFO] Loaded event: ready
+[2025-04-28T20:37:32.971Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:37:32.974Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:37:32.975Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:37:32.978Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:37:32.978Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:37:32.984Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:37:32.985Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:37:32.987Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:37:32.989Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:37:32.991Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:37:32.993Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:37:32.995Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:37:32.996Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:37:32.997Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:37:32.997Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:37:32.998Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:37:33.003Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:37:33.003Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:37:32.972Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:37:33.483Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:37:33.487Z] [INFO] Loaded event: ready
+[2025-04-28T20:37:33.487Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:37:33.488Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:37:33.489Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:37:33.489Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:37:33.490Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:37:33.486Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:37:33.491Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:37:33.492Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:37:33.493Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:37:33.494Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:37:33.494Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:37:33.498Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:37:33.499Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:37:33.499Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:37:33.499Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:37:33.500Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:37:33.500Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:37:33.500Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:37:33.486Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:37:33.694Z] [INFO] Bot logged in successfully
+[2025-04-28T20:37:33.695Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:37:33.695Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:37:33.699Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:37:33.699Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:37:33.700Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:37:34.023Z] [INFO] Bot logged in successfully
+[2025-04-28T20:37:34.023Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:37:34.024Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:37:34.035Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:37:34.036Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:37:34.036Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:38:33.763Z] [INFO] Started removing all existing application commands...
+[2025-04-28T20:38:33.767Z] [INFO] Removing commands from guild: 1364548893345452082
+[2025-04-28T20:38:34.025Z] [INFO] Successfully deleted all guild commands.
+[2025-04-28T20:38:34.026Z] [INFO] Removing global commands...
+[2025-04-28T20:38:34.567Z] [INFO] Successfully deleted all global commands.
+[2025-04-28T20:38:34.567Z] [INFO] Waiting a moment before registering new commands...
+[2025-04-28T20:38:36.569Z] [INFO] Now running deploy-commands.js to register new commands...
+[2025-04-28T20:38:36.580Z] [INFO] Added command: joke from fun
+[2025-04-28T20:38:36.578Z] [INFO] Added command: coinflip from fun
+[2025-04-28T20:38:36.576Z] [INFO] Added command: 8ball from fun
+[2025-04-28T20:38:36.585Z] [INFO] Added command: giveaway from giveaway
+[2025-04-28T20:38:36.588Z] [INFO] Added command: gend from giveaway
+[2025-04-28T20:38:36.590Z] [INFO] Added command: glist from giveaway
+[2025-04-28T20:38:36.591Z] [INFO] Added command: greroll from giveaway
+[2025-04-28T20:38:36.594Z] [INFO] Added command: ban from moderation
+[2025-04-28T20:38:36.596Z] [INFO] Added command: kick from moderation
+[2025-04-28T20:38:36.597Z] [INFO] Added command: purge from moderation
+[2025-04-28T20:38:36.600Z] [INFO] Added command: timeout from moderation
+[2025-04-28T20:38:36.602Z] [INFO] Added command: unsticky from sticky
+[2025-04-28T20:38:36.608Z] [INFO] Added command: sticky from sticky
+[2025-04-28T20:38:36.612Z] [INFO] Added command: ping from utility
+[2025-04-28T20:38:36.613Z] [INFO] Added command: serverinfo from utility
+[2025-04-28T20:38:36.614Z] [INFO] Added command: userinfo from utility
+[2025-04-28T20:38:36.615Z] [INFO] Started refreshing 16 application (/) commands.
+[2025-04-28T20:38:37.006Z] [INFO] Successfully reloaded 16 guild (/) commands.
+[2025-04-28T20:39:09.931Z] [INFO] Added command: 8ball from fun
+[2025-04-28T20:39:09.938Z] [INFO] Added command: joke from fun
+[2025-04-28T20:39:09.936Z] [INFO] Added command: coinflip from fun
+[2025-04-28T20:39:09.942Z] [INFO] Added command: giveaway from giveaway
+[2025-04-28T20:39:09.945Z] [INFO] Added command: gend from giveaway
+[2025-04-28T20:39:09.947Z] [INFO] Added command: glist from giveaway
+[2025-04-28T20:39:09.950Z] [INFO] Added command: greroll from giveaway
+[2025-04-28T20:39:09.952Z] [INFO] Added command: ban from moderation
+[2025-04-28T20:39:09.953Z] [INFO] Added command: kick from moderation
+[2025-04-28T20:39:09.955Z] [INFO] Added command: purge from moderation
+[2025-04-28T20:39:09.958Z] [INFO] Added command: timeout from moderation
+[2025-04-28T20:39:09.960Z] [INFO] Added command: unsticky from sticky
+[2025-04-28T20:39:09.963Z] [INFO] Added command: help from utility
+[2025-04-28T20:39:09.961Z] [INFO] Added command: sticky from sticky
+[2025-04-28T20:39:09.963Z] [INFO] Added command: ping from utility
+[2025-04-28T20:39:09.966Z] [INFO] Added command: userinfo from utility
+[2025-04-28T20:39:09.964Z] [INFO] Added command: serverinfo from utility
+[2025-04-28T20:39:09.968Z] [INFO] Started refreshing 17 application (/) commands.
+[2025-04-28T20:39:10.280Z] [INFO] Successfully reloaded 17 guild (/) commands.
+[2025-04-28T20:39:19.265Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:39:19.268Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:39:19.268Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:39:19.268Z] [INFO] Loaded event: ready
+[2025-04-28T20:39:19.269Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:39:19.270Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:39:19.271Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:39:19.272Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:39:19.273Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:39:19.273Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:39:19.275Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:39:19.276Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:39:19.276Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:39:19.277Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:39:19.278Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:39:19.279Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:39:19.279Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:39:19.281Z] [INFO] Loaded command: help from utility
+[2025-04-28T20:39:19.281Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:39:19.282Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:39:19.282Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:39:19.283Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:39:19.868Z] [INFO] Bot logged in successfully
+[2025-04-28T20:39:19.869Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:39:19.869Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:39:19.882Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:39:19.882Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:39:19.882Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:39:22.808Z] [INFO] User sselyan (839580152774000721) used command /sticky
+[2025-04-28T20:39:22.808Z] [INFO] User sselyan (839580152774000721) used command /sticky
+[2025-04-28T20:39:22.958Z] [ERROR] Error executing command sticky: Unknown interaction
+[2025-04-28T20:39:23.473Z] [INFO] Sticky message set in channel #general (1364548893961879687) by sselyan (839580152774000721)
+[2025-04-28T20:39:37.736Z] [INFO] User sselyan (839580152774000721) used command /help
+[2025-04-28T20:39:48.124Z] [INFO] User sselyan (839580152774000721) used command /coinflip
+[2025-04-28T20:39:56.685Z] [INFO] User sselyan (839580152774000721) used command /8ball
+[2025-04-28T20:40:28.489Z] [INFO] User sselyan (839580152774000721) used command /giveaway
+[2025-04-28T20:40:29.101Z] [INFO] Giveaway 1745872828670 created by sselyan (839580152774000721) in channel general (1364548893961879687)
+[2025-04-28T20:40:31.718Z] [INFO] Button interaction: giveaway:join:1745872828670 by sselyan
+[2025-04-28T20:40:35.586Z] [INFO] Button interaction: giveaway:join:1745872828670 by sselyan
+[2025-04-28T20:41:29.316Z] [INFO] Giveaway 1745872828670 ended. Winners: 839580152774000721
+[2025-04-28T20:47:18.965Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:47:18.971Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:47:18.972Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:47:18.972Z] [INFO] Loaded event: ready
+[2025-04-28T20:47:18.973Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:47:18.974Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:47:18.975Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:47:18.975Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:47:18.976Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:47:18.977Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:47:18.978Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:47:18.980Z] [INFO] Loaded command: antiping from moderation
+[2025-04-28T20:47:18.981Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:47:18.982Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:47:18.984Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:47:18.986Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:47:18.986Z] [INFO] Loaded command: unmute from moderation
+[2025-04-28T20:47:18.987Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:47:18.987Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:47:18.988Z] [INFO] Loaded command: help from utility
+[2025-04-28T20:47:18.989Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:47:18.989Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:47:18.990Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:47:18.990Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:47:19.710Z] [INFO] Bot logged in successfully
+[2025-04-28T20:47:19.710Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:47:19.710Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:47:19.715Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:47:19.715Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:47:19.715Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:47:28.313Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:47:28.316Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:47:28.317Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:47:28.317Z] [INFO] Loaded event: ready
+[2025-04-28T20:47:28.318Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:47:28.318Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:47:28.320Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:47:28.324Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:47:28.320Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:47:28.325Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:47:28.326Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:47:28.328Z] [INFO] Loaded command: antiping from moderation
+[2025-04-28T20:47:28.328Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:47:28.329Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:47:28.334Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:47:28.335Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:47:28.336Z] [INFO] Loaded command: unmute from moderation
+[2025-04-28T20:47:28.337Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:47:28.337Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:47:28.338Z] [INFO] Loaded command: help from utility
+[2025-04-28T20:47:28.339Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:47:28.339Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:47:28.340Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:47:28.340Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:47:28.833Z] [INFO] Bot logged in successfully
+[2025-04-28T20:47:28.833Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:47:28.833Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:47:28.837Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:47:28.838Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:47:28.838Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:47:48.005Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:47:48.011Z] [INFO] Loaded event: ready
+[2025-04-28T20:47:48.012Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:47:48.013Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:47:48.014Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:47:48.014Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:47:48.015Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:47:48.015Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:47:48.016Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:47:48.018Z] [INFO] Loaded command: antiping from moderation
+[2025-04-28T20:47:48.018Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:47:48.019Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:47:48.020Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:47:48.021Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:47:48.024Z] [INFO] Loaded command: unmute from moderation
+[2025-04-28T20:47:48.024Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:47:48.025Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:47:48.026Z] [INFO] Loaded command: help from utility
+[2025-04-28T20:47:48.026Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:47:48.027Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:47:48.027Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:47:48.027Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:47:48.010Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:47:48.011Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:47:48.762Z] [INFO] Bot logged in successfully
+[2025-04-28T20:47:48.763Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:47:48.763Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:47:48.782Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:47:48.783Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:47:48.783Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:51:24.312Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:51:24.314Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:51:24.315Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:51:24.315Z] [INFO] Loaded event: ready
+[2025-04-28T20:51:24.316Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:51:24.316Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:51:24.318Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:51:24.318Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:51:24.320Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:51:24.318Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:51:24.319Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:51:24.321Z] [INFO] Loaded command: antiping from moderation
+[2025-04-28T20:51:24.322Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:51:24.323Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:51:24.325Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:51:24.327Z] [INFO] Loaded command: unmute from moderation
+[2025-04-28T20:51:24.326Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:51:24.328Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:51:24.328Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:51:24.329Z] [INFO] Loaded command: help from utility
+[2025-04-28T20:51:24.329Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:51:24.330Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:51:24.330Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:51:24.330Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:51:24.830Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:51:24.831Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:51:24.831Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:51:24.831Z] [INFO] Bot logged in successfully
+[2025-04-28T20:51:24.832Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:51:24.832Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:51:34.383Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:51:34.388Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:51:34.389Z] [INFO] Loaded event: ready
+[2025-04-28T20:51:34.389Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:51:34.390Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:51:34.391Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:51:34.387Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:51:34.392Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:51:34.393Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:51:34.394Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:51:34.395Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:51:34.397Z] [INFO] Loaded command: antiping from moderation
+[2025-04-28T20:51:34.399Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:51:34.400Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:51:34.401Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:51:34.402Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:51:34.403Z] [INFO] Loaded command: unmute from moderation
+[2025-04-28T20:51:34.404Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:51:34.404Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:51:34.405Z] [INFO] Loaded command: help from utility
+[2025-04-28T20:51:34.405Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:51:34.406Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:51:34.407Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:51:34.407Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:51:34.976Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:51:34.977Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:51:34.977Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:51:34.978Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:51:34.977Z] [INFO] Bot logged in successfully
+[2025-04-28T20:51:34.978Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:51:53.809Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:51:53.815Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:51:53.816Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:51:53.816Z] [INFO] Loaded event: ready
+[2025-04-28T20:51:53.817Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:51:53.817Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:51:53.819Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:51:53.819Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:51:53.820Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:51:53.821Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:51:53.823Z] [INFO] Loaded command: antiping from moderation
+[2025-04-28T20:51:53.824Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:51:53.825Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:51:53.826Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:51:53.830Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:51:53.831Z] [INFO] Loaded command: unmute from moderation
+[2025-04-28T20:51:53.820Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:51:53.832Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:51:53.832Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:51:53.833Z] [INFO] Loaded command: help from utility
+[2025-04-28T20:51:53.834Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:51:53.834Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:51:53.835Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:51:53.835Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:51:54.386Z] [INFO] Bot logged in successfully
+[2025-04-28T20:51:54.386Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:51:54.386Z] [INFO] Setting up sticky message handler
+[2025-04-28T20:51:54.391Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:51:54.391Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:51:54.391Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:58:13.731Z] [INFO] Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent
+[2025-04-28T20:58:13.734Z] [INFO] Loaded event: interactionCreate
+[2025-04-28T20:58:13.734Z] [INFO] Loaded event: messageCreate
+[2025-04-28T20:58:13.734Z] [INFO] Loaded event: ready
+[2025-04-28T20:58:13.735Z] [INFO] Loaded command: 8ball from fun
+[2025-04-28T20:58:13.735Z] [INFO] Loaded command: coinflip from fun
+[2025-04-28T20:58:13.736Z] [INFO] Loaded command: joke from fun
+[2025-04-28T20:58:13.737Z] [INFO] Loaded command: giveaway from giveaway
+[2025-04-28T20:58:13.737Z] [INFO] Loaded command: gend from giveaway
+[2025-04-28T20:58:13.738Z] [INFO] Loaded command: glist from giveaway
+[2025-04-28T20:58:13.739Z] [INFO] Loaded command: greroll from giveaway
+[2025-04-28T20:58:13.742Z] [INFO] Loaded command: antiping from moderation
+[2025-04-28T20:58:13.743Z] [INFO] Loaded command: ban from moderation
+[2025-04-28T20:58:13.743Z] [INFO] Loaded command: kick from moderation
+[2025-04-28T20:58:13.744Z] [INFO] Loaded command: purge from moderation
+[2025-04-28T20:58:13.745Z] [INFO] Loaded command: timeout from moderation
+[2025-04-28T20:58:13.746Z] [INFO] Loaded command: unmute from moderation
+[2025-04-28T20:58:13.746Z] [INFO] Loaded command: unsticky from sticky
+[2025-04-28T20:58:13.746Z] [INFO] Loaded command: sticky from sticky
+[2025-04-28T20:58:13.747Z] [INFO] Loaded command: help from utility
+[2025-04-28T20:58:13.747Z] [INFO] Loaded command: ping from utility
+[2025-04-28T20:58:13.748Z] [INFO] Loaded command: serverinfo from utility
+[2025-04-28T20:58:13.748Z] [INFO] Loaded command: userinfo from utility
+[2025-04-28T20:58:13.748Z] [INFO] Attempting to log in to Discord...
+[2025-04-28T20:58:14.551Z] [INFO] Logged in as Quantum#5159
+[2025-04-28T20:58:14.552Z] [INFO] Bot is serving 1 guilds
+[2025-04-28T20:58:14.552Z] [INFO] Connected to guild: s3lyan's server (1364548893345452082) with 4 members
+[2025-04-28T20:58:14.552Z] [INFO] Bot logged in successfully
+[2025-04-28T20:58:14.553Z] [INFO] Loaded 0 active giveaways
+[2025-04-28T20:58:14.553Z] [INFO] Setting up sticky message handler

@@ -43,7 +43,7 @@ module.exports = {
         .setMinValue(1)
         .setMaxValue(1440)),
   
-  cooldown: 30,
+  cooldown: 60,
   
   /**
    * Executes the poll command

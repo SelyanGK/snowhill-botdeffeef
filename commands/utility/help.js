@@ -16,11 +16,14 @@ module.exports = {
         .addChoices(
           { name: 'Fun', value: 'fun' },
           { name: 'Giveaway', value: 'giveaway' },
+          { name: 'Misc', value: 'misc' },
           { name: 'Moderation', value: 'moderation' },
           { name: 'Sticky', value: 'sticky' },
           { name: 'Utility', value: 'utility' },
           { name: 'Anti-Ping', value: 'antiping' }
-        )),
+        ))
+    // Explicitly set null permissions to ensure it's visible to everyone
+    .setDefaultMemberPermissions(null),
 
   cooldown: 5,
 
@@ -59,8 +62,9 @@ async function showAllCategories(interaction) {
     .setTitle(`${config.serverName} Bot Commands`)
     .setDescription('Here are all available command categories. Use `/help category:name` to see specific commands.')
     .addFields(
-      { name: '🎮 Fun', value: 'Fun commands like 8ball, coinflip, and jokes', inline: true },
+      { name: '🎮 Fun', value: 'Fun commands like 8ball, coinflip, and games', inline: true },
       { name: '🎁 Giveaway', value: 'Create and manage server giveaways', inline: true },
+      { name: '📝 Misc', value: 'Miscellaneous commands like reminders', inline: true },
       { name: '🛡️ Moderation', value: 'Commands for server moderation', inline: true },
       { name: '📌 Sticky', value: 'Set and remove sticky messages', inline: true },
       { name: '🔧 Utility', value: 'Utility commands like ping, serverinfo, and embed creation', inline: true },

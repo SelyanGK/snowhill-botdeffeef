@@ -105,7 +105,7 @@ module.exports = {
           { name: 'Technology', value: 'technology' }
         )),
   
-  cooldown: 30, // 30 seconds cooldown
+  cooldown: 60, // 60 seconds cooldown
   
   /**
    * Executes the hangman command

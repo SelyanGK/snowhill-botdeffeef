@@ -46,7 +46,7 @@ module.exports = {
         .setDescription('The user to play against')
         .setRequired(false)),
   
-  cooldown: 10,
+  cooldown: 60,
   
   /**
    * Creates a new tic tac toe game

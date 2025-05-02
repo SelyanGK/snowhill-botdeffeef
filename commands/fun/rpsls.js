@@ -23,7 +23,7 @@ module.exports = {
         .setDescription('The user to challenge (leave empty to play against the bot)')
         .setRequired(false)),
   
-  cooldown: 5,
+  cooldown: 60,
   
   /**
    * Executes the RPSLS command

@@ -18,7 +18,9 @@ const userCooldowns = new Map();
 module.exports = {
   data: new SlashCommandBuilder()
     .setName('staff')
-    .setDescription('Displays a list of all staff members sorted by hierarchy'),
+    .setDescription('Displays a list of all staff members sorted by hierarchy')
+    // Everyone can see the command, no permission restrictions
+    .setDefaultMemberPermissions(null),
   
   // 5 minute cooldown (bypassed for administrators)
   cooldown: 300,
@@ -83,9 +85,9 @@ module.exports = {
       // Fetch all members who have at least one of the staff roles
       await guild.members.fetch();
       
-      // Get staff members
+      // Get staff members (excluding bots)
       const staffMembers = guild.members.cache.filter(member => {
-        return member.roles.cache.some(role => STAFF_ROLE_IDS.includes(role.id));
+        return !member.user.bot && member.roles.cache.some(role => STAFF_ROLE_IDS.includes(role.id));
       });
       
       if (staffMembers.size === 0) {

@@ -1,10 +1,10 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const logger = require('../../utils/logger');
 const config = require('../../config.json');
-const Database = require('../../utils/database');
+const { getDatabase } = require('../../utils/dbManager');
 
-// Sticky message database
-const stickyDb = new Database('sticky.json');
+// Sticky message database - using static instance from dbManager
+const stickyDb = getDatabase('sticky');
 
 module.exports = {
   data: new SlashCommandBuilder()
@@ -133,13 +133,88 @@ module.exports = {
   },
   
   /**
-   * Sets up the handler for sticky messages
+   * Sets up the handler for sticky messages and reinstates all sticky messages
    * @param {Client} client - The Discord client
    */
-  handleStickyMessages(client) {
+  async handleStickyMessages(client) {
     logger.info('Setting up sticky message handler');
     
     // This is called from index.js
-    // The actual handling of sticky messages is in the messageCreate event
+    try {
+      // Get all sticky message configurations
+      const stickyMessages = stickyDb.read();
+      
+      // Track the number of messages we successfully reinstate
+      let reinstatedCount = 0;
+      
+      // Process each sticky message from the database
+      for (const [channelId, stickyData] of Object.entries(stickyMessages)) {
+        // Skip special entries like messageCount and locks
+        if (channelId.includes('_messageCount') || channelId.includes('_lock')) {
+          continue;
+        }
+        
+        try {
+          // Get the channel
+          const channel = await client.channels.fetch(channelId).catch(() => null);
+          
+          // Skip if channel doesn't exist or bot can't access it
+          if (!channel) {
+            logger.warn(`Sticky message channel ${channelId} not found or inaccessible`);
+            continue;
+          }
+          
+          // Create message options
+          const messageOptions = {
+            content: stickyData.content,
+            embeds: stickyData.embedContent ? [{
+              description: stickyData.embedContent,
+              color: parseInt(stickyData.color || '#3498db'.replace('#', ''), 16)
+            }] : []
+          };
+          
+          // Delete existing message if it exists
+          if (stickyData.lastMessageId) {
+            try {
+              const message = await channel.messages.fetch(stickyData.lastMessageId).catch(() => null);
+              if (message && !message.deleted) {
+                await message.delete().catch(error => {
+                  logger.warn(`Failed to delete previous sticky message: ${error.message}`);
+                });
+              }
+            } catch (error) {
+              logger.warn(`Error fetching previous sticky message: ${error.message}`);
+            }
+          }
+          
+          // Send new sticky message
+          const newStickyMessage = await channel.send(messageOptions);
+          
+          // Update the sticky message data
+          stickyMessages[channelId].lastMessageId = newStickyMessage.id;
+          stickyMessages[channelId].lastStickyTime = Date.now();
+          
+          // Reset message counter for this channel
+          stickyMessages[`${channelId}_messageCount`] = 0;
+          
+          reinstatedCount++;
+          
+        } catch (error) {
+          logger.error(`Failed to reinstate sticky message in channel ${channelId}: ${error.message}`);
+        }
+      }
+      
+      // Save updated message IDs
+      stickyDb.write(stickyMessages);
+      
+      if (reinstatedCount > 0) {
+        logger.info(`Successfully reinstated ${reinstatedCount} sticky message(s) after bot restart`);
+      } else {
+        logger.info(`No sticky messages to reinstate after bot restart`);
+      }
+      
+    } catch (error) {
+      logger.error(`Error setting up sticky messages: ${error.message}`);
+    }
   }
 };

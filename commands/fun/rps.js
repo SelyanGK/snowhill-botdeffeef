@@ -33,7 +33,7 @@ module.exports = {
         .setDescription('User to challenge (leave empty to play against the bot)')
         .setRequired(false)),
   
-  cooldown: 10,
+  cooldown: 60,
   
   /**
    * Executes the RPS command

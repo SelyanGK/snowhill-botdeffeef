@@ -32,7 +32,7 @@ module.exports = {
             .setDescription('Your 5-letter word guess')
             .setRequired(true))),
   
-  cooldown: 3,
+  cooldown: 60,
   
   /**
    * Executes the wordle command

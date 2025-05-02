@@ -1,0 +1,9 @@
+{
+  "enabled": false,
+  "channels": [],
+  "message": "Welcome {user} to the server!",
+  "ping": true,
+  "deleteAfter": 30,
+  "withEmbed": true,
+  "color": "#3498db"
+}

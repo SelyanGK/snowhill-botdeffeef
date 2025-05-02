@@ -46,7 +46,7 @@ module.exports = {
           { name: 'Random', value: 'random' }
         )),
   
-  cooldown: 10,
+  cooldown: 60,
   
   /**
    * Executes the scramble command

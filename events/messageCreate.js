@@ -2,18 +2,20 @@ const fs = require('fs');
 const path = require('path');
 const { PermissionFlagsBits } = require('discord.js');
 const logger = require('../utils/logger');
-const Database = require('../utils/database');
+const { getDatabase } = require('../utils/dbManager');
 
-// Databases
-const stickyDb = new Database('sticky.json');
-const antipingDb = new Database('antiping.json');
-const afkDb = new Database('afk.json');
+// Databases - using static instances
+const stickyDb = getDatabase('sticky');
+const antipingDb = getDatabase('antiping');
+const afkDb = getDatabase('afk');
 
 // Import commands that need to hook into message events
 const afkCommand = require('../commands/utility/afk');
 const snipeCommand = require('../commands/utility/snipe');
 const autoreplyCommand = require('../commands/utility/autoreply');
 const scrambleCommand = require('../commands/fun/scramble');
+const mentionsCommand = require('../commands/utility/mentions');
+const communityMood = require('../utils/communityMood');
 
 module.exports = {
   name: 'messageCreate',
@@ -39,6 +41,14 @@ module.exports = {
     if (scrambleCommand.checkUserGuess) {
       await scrambleCommand.checkUserGuess(message);
     }
+    
+    // Track mentions in messages
+    if (mentionsCommand.processMentionsInMessage) {
+      mentionsCommand.processMentionsInMessage(message);
+    }
+    
+    // Track message for community mood
+    communityMood.trackMessage(message);
     
     // Handle sticky messages functionality with rate limiting to prevent lag
     try {

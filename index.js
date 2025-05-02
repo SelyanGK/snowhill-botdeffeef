@@ -13,13 +13,14 @@ const client = new Client({
     GatewayIntentBits.Guilds,
     GatewayIntentBits.GuildMessages,
     GatewayIntentBits.GuildMembers,
-    GatewayIntentBits.MessageContent
+    GatewayIntentBits.MessageContent,
+    GatewayIntentBits.GuildMessageReactions
   ],
-  partials: [Partials.Channel, Partials.Message]
+  partials: [Partials.Channel, Partials.Message, Partials.Reaction]
 });
 
 // Log the intents for debugging
-logger.info(`Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent`);
+logger.info(`Requesting intents: Guilds, GuildMessages, GuildMembers, MessageContent, GuildMessageReactions`);
 
 // Create collections for commands and cooldowns
 client.commands = new Collection();
@@ -148,8 +149,11 @@ client.login(token).then(async () => {
   // Check giveaways every minute
   setInterval(() => checkGiveaways(client), 60000);
   
-  // Setup handler for sticky messages
-  handleStickyMessages(client);
+  // Setup handler for sticky messages - this will also reinstate any sticky messages
+  await handleStickyMessages(client);
+  
+  // Log the community mood initialization
+  logger.info('Community mood tracking system initialized');
 }).catch(error => {
   logger.error(`Error logging in: ${error.message}`);
   logger.error('Please check that your Discord token is valid and that the bot account is enabled');

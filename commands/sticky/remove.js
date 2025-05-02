@@ -1,10 +1,10 @@
 const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const logger = require('../../utils/logger');
 const config = require('../../config.json');
-const Database = require('../../utils/database');
+const { getDatabase } = require('../../utils/dbManager');
 
-// Sticky message database
-const stickyDb = new Database('sticky.json');
+// Sticky message database - using static instance from dbManager
+const stickyDb = getDatabase('sticky');
 
 module.exports = {
   data: new SlashCommandBuilder()
