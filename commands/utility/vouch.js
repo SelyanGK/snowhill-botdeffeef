@@ -18,6 +18,9 @@ module.exports = {
    * @param {Interaction} interaction - The interaction
    */
   async execute(interaction) {
+    // Defer reply as ephemeral immediately to ensure we don't timeout
+    await interaction.deferReply({ ephemeral: true });
+    
     // Get the target user from options
     const targetUser = interaction.options.getUser('user');
     
@@ -38,17 +41,17 @@ Please do it to avoid getting punished!
       // Send DM to the target user
       await targetUser.send({ embeds: [vouchEmbed] });
       
-      // Reply with ephemeral confirmation message
-      await interaction.reply({ 
-        content: `Sent vouch message to ${targetUser}!`, 
-        ephemeral: true 
+      // Edit the deferred reply with success message
+      await interaction.editReply({ 
+        content: `Sent vouch message to ${targetUser}!`
       });
     } catch (error) {
       // Handle error if DM cannot be sent
       console.error(`Could not send DM to ${targetUser.tag}`, error);
-      await interaction.reply({ 
-        content: `❌ Could not send a DM to ${targetUser}. They might have DMs disabled or blocked the bot.`, 
-        ephemeral: true 
+      
+      // Edit the deferred reply with error message
+      await interaction.editReply({ 
+        content: `\❌ Could not send a DM to ${targetUser}. They might have DMs disabled or blocked the bot.`
       });
     }
   },
