@@ -94,6 +94,66 @@ module.exports = {
             await giveawayEnd.handleEndEarly(interaction, client, params[0]);
           }
         }
+        // Handle tic tac toe game interactions
+        else if (type === 'ttt') {
+          // Load the tic tac toe module dynamically
+          const tictactoe = require('../commands/fun/tictactoe');
+          await tictactoe.handleTicTacToeInteraction(interaction, action, params[0], params[1]);
+        }
+        // Handle trivia game interactions
+        else if (type === 'trivia') {
+          // Load the trivia module dynamically
+          const trivia = require('../commands/fun/trivia');
+          await trivia.handleTriviaInteraction(interaction, action, params[0], params[1]);
+        }
+        // Handle Rock Paper Scissors game interactions
+        else if (type === 'rps') {
+          // Load the RPS module dynamically
+          const rps = require('../commands/fun/rps');
+          await rps.handleRpsInteraction(interaction, action, params[0], params[1]);
+        }
+        // Handle Hangman game interactions
+        else if (type === 'hangman') {
+          // Load the Hangman module dynamically
+          const hangman = require('../commands/fun/hangman');
+          await hangman.handleHangmanInteraction(interaction, action, params[0]);
+        }
+        // Handle Word Scramble game interactions
+        else if (type === 'scramble') {
+          // Load the Scramble module dynamically
+          const scramble = require('../commands/fun/scramble');
+          await scramble.handleScrambleInteraction(interaction, action, params[0]);
+        }
+        // Handle Wordle game interactions
+        else if (type === 'wordle') {
+          // Load the Wordle module dynamically
+          const wordle = require('../commands/fun/wordle');
+          await wordle.handleWordleInteraction(interaction);
+        }
+        // Handle Poll interactions
+        else if (type === 'poll') {
+          // Load the Poll module dynamically
+          const poll = require('../commands/fun/poll');
+          await poll.handlePollInteraction(interaction);
+        }
+        // Handle RPSLS game interactions
+        else if (type === 'rpsls') {
+          // Load the RPSLS module dynamically
+          const rpsls = require('../commands/fun/rpsls');
+          
+          // Special case for bot game
+          if (action === 'bot_choice') {
+            await rpsls.handleBotGame(interaction, params[0], params[1]);
+          }
+          // Special case for play again
+          else if (action === 'play_again') {
+            await rpsls.playAgainstBot(interaction);
+          }
+          // Standard game interactions
+          else {
+            await rpsls.handleRpslsInteraction(interaction, action, params[0], params[1]);
+          }
+        }
       } catch (error) {
         logger.error(`Error handling button interaction: ${error.message}`);
         await interaction.reply({ 

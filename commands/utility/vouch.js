@@ -49,12 +49,39 @@ Please do it to avoid getting punished!
       });
     } catch (error) {
       // Handle error if DM cannot be sent
-      console.error(`Could not send DM to ${targetUser.tag}`, error);
+      const logger = require('../../utils/logger');
+      logger.error(`Could not send vouch DM to ${targetUser.tag} (${targetUser.id}): ${error.message}`);
       
-      // Edit the deferred reply with error message
-      await interaction.editReply({ 
-        content: `\❌ Could not send a DM to ${targetUser}. They might have DMs disabled or blocked the bot.`
-      });
+      // Log more details about the error for debugging
+      if (error.code) {
+        logger.debug(`Error code: ${error.code}, Status: ${error.status || 'N/A'}`);
+      }
+      
+      // Try to send a message in the channel as a fallback
+      try {
+        // Send the message in channel but set it to auto-delete after 30 seconds
+        const fallbackMsg = await interaction.channel.send({ 
+          content: `${targetUser}, please check your vouch reminder:`,
+          embeds: [vouchEmbed]
+        });
+        
+        // Delete the message after 30 seconds
+        setTimeout(() => {
+          fallbackMsg.delete().catch(e => logger.error(`Could not delete fallback vouch message: ${e.message}`));
+        }, 30000);
+        
+        // Edit the deferred reply with partial success message
+        await interaction.editReply({ 
+          content: `\❌ Could not send a DM to ${targetUser}, but sent a temporary message in the channel instead. This could be due to:\n• The user has temporarily blocked DMs from server members\n• The user has privacy settings that prevent the bot from messaging them\n• A temporary Discord API issue`
+        });
+      } catch (fallbackError) {
+        // If sending in channel also fails, edit the reply with complete error message
+        logger.error(`Failed to send fallback vouch message in channel: ${fallbackError.message}`);
+        
+        await interaction.editReply({ 
+          content: `\❌ Could not send a vouch reminder to ${targetUser} via DM or in channel. This could be due to:\n• The user has temporarily blocked DMs from server members\n• The user has privacy settings that prevent the bot from messaging them\n• A temporary Discord API issue`
+        });
+      }
     }
   },
 };

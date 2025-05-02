@@ -5,6 +5,7 @@ const config = require('./config.json');
 const logger = require('./utils/logger');
 const { loadGiveaways, checkGiveaways } = require('./commands/giveaway/create');
 const { handleStickyMessages } = require('./commands/sticky/set');
+const remindCommand = require('./commands/misc/remind');
 
 // Create a new client instance
 const client = new Client({

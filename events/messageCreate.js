@@ -7,6 +7,14 @@ const Database = require('../utils/database');
 // Databases
 const stickyDb = new Database('sticky.json');
 const antipingDb = new Database('antiping.json');
+const afkDb = new Database('afk.json');
+
+// Import commands that need to hook into message events
+const afkCommand = require('../commands/utility/afk');
+const snipeCommand = require('../commands/utility/snipe');
+const levelCommand = require('../commands/misc/level');
+const autoreplyCommand = require('../commands/utility/autoreply');
+const scrambleCommand = require('../commands/fun/scramble');
 
 module.exports = {
   name: 'messageCreate',
@@ -22,7 +30,21 @@ module.exports = {
     // Check for anti-ping violations
     await this.checkAntiPing(message, client);
     
-    // Handle sticky messages functionality
+    // Check for AFK status
+    await afkCommand.checkAFK(message);
+    
+    // Handle XP for leveling system
+    levelCommand.handleMessageXp(message);
+    
+    // Check for auto-reply triggers
+    await autoreplyCommand.checkMessage(message);
+    
+    // Check for Word Scramble game guesses
+    if (scrambleCommand.checkUserGuess) {
+      await scrambleCommand.checkUserGuess(message);
+    }
+    
+    // Handle sticky messages functionality with rate limiting to prevent lag
     try {
       const stickyMessages = stickyDb.read();
       const channelId = message.channel.id;
@@ -31,11 +53,59 @@ module.exports = {
       if (stickyMessages[channelId]) {
         const stickyData = stickyMessages[channelId];
         
-        // Delete the previous sticky message if it exists
-        if (stickyData.lastMessageId) {
-          try {
+        // Skip if the message author is the bot itself
+        if (message.author.id === client.user.id) return;
+        
+        // Skip if the message ID is the same as the stored lastMessageId (prevents double processing)
+        if (message.id === stickyData.lastMessageId) return;
+        
+        // Check if the current time is after the cooldown period
+        const currentTime = Date.now();
+        const cooldownTime = stickyData.lastStickyTime || 0;
+        const cooldownPeriod = 2000; // 2 seconds cooldown between sticky messages
+        
+        // Skip if we're within the cooldown period
+        if (currentTime - cooldownTime < cooldownPeriod) {
+          return;
+        }
+        
+        // Count messages since last sticky (to only show after X messages)
+        const messageCountKey = `${channelId}_messageCount`;
+        if (!stickyMessages[messageCountKey]) {
+          stickyMessages[messageCountKey] = 0;
+        }
+        
+        // Increment message count
+        stickyMessages[messageCountKey]++;
+        
+        // Only show sticky message after every 5 regular messages
+        // This prevents spam in active channels
+        if (stickyMessages[messageCountKey] < 5) {
+          stickyDb.write(stickyMessages); // Save the updated message count
+          return;
+        }
+        
+        // Reset message counter
+        stickyMessages[messageCountKey] = 0;
+        
+        // Use a lock system to prevent multiple sticky messages being sent simultaneously
+        const lockKey = `${channelId}_lock`;
+        if (stickyMessages[lockKey]) {
+          // There's an active sticky message operation for this channel
+          // Skip this operation to prevent duplicates
+          return;
+        }
+        
+        // Set the lock
+        stickyMessages[lockKey] = true;
+        stickyDb.write(stickyMessages);
+        
+        try {
+          // Delete the previous sticky message if it exists and is still in cache
+          if (stickyData.lastMessageId) {
             const channel = client.channels.cache.get(channelId);
             if (channel) {
+              // Try to fetch the message but don't throw if not found
               const previousMessage = await channel.messages
                 .fetch(stickyData.lastMessageId)
                 .catch(() => null);
@@ -46,13 +116,9 @@ module.exports = {
                 });
               }
             }
-          } catch (error) {
-            logger.warn(`Error managing previous sticky message: ${error.message}`);
           }
-        }
-        
-        // Send a new sticky message
-        try {
+          
+          // Send a new sticky message
           const newStickyMessage = await message.channel.send({
             content: stickyData.content,
             embeds: stickyData.embedContent ? [{
@@ -61,10 +127,19 @@ module.exports = {
             }] : []
           });
           
-          // Update the last message ID
+          // Update the last message ID and timestamp
           stickyMessages[channelId].lastMessageId = newStickyMessage.id;
+          stickyMessages[channelId].lastStickyTime = currentTime;
+          
+          // Release the lock
+          delete stickyMessages[lockKey];
+          
           stickyDb.write(stickyMessages);
         } catch (error) {
+          // Release the lock even if there's an error
+          delete stickyMessages[lockKey];
+          stickyDb.write(stickyMessages);
+          
           logger.error(`Failed to send sticky message: ${error.message}`);
         }
       }
