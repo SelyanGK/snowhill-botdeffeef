@@ -1,4 +1,4 @@
-const { SlashCommandBuilder } = require('discord.js');
+const { SlashCommandBuilder, PermissionFlagsBits } = require('discord.js');
 const config = require('../../config.json');
 const EmbedCreator = require('../../utils/embedCreator');
 
@@ -9,7 +9,9 @@ module.exports = {
     .addUserOption(option =>
       option.setName('user')
         .setDescription('The user to send the vouch reminder to')
-        .setRequired(true)),
+        .setRequired(true))
+    // Everyone can see the command, but only users with Manage Messages permission can use it
+    .setDefaultMemberPermissions(PermissionFlagsBits.ManageMessages),
   
   cooldown: 10,
   
